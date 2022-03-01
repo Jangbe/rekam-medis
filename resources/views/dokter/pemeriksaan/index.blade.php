@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@if ($patient)
 <div class="row">
     <div class="col-12">
         <div class="alert alert-primary text-white">Pemeriksaan {{ $patient->patient->name }} ({{ $patient->patient->age }})</div>
@@ -158,4 +159,7 @@
         </div>
     </div>
 </div>
+@else
+<div class="alert alert-warning text-white">Belum Ada Pasien</div>
+@endif
 @endsection
