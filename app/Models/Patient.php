@@ -10,7 +10,7 @@ class Patient extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    protected $appends = ['date_birth', 'parent', 'age'];
+    protected $appends = ['date_birth', 'parent', 'age', 'month'];
 
     public function getDateBirthAttribute(){
         return $this->birth.' ('.Carbon::parse($this->birth)->diff(Carbon::now())->format('%y tahun %m bulan %d hari').')';
@@ -24,6 +24,11 @@ class Patient extends Model
     public function getAgeAttribute()
     {
         return Carbon::parse($this->birth)->diff(Carbon::now())->format('%y tahun %m bulan %d hari');
+    }
+
+    public function getMonthAttribute()
+    {
+        return Carbon::parse($this->birth)->diffInMonths(Carbon::now());
     }
 
 }

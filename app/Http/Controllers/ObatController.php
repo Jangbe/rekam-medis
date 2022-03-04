@@ -38,7 +38,7 @@ class ObatController extends Controller
                 return '<span class="badge badge-sm bg-gradient-success">'.$o->satuan.'</span>';
             })
             ->editColumn('price', function($o){
-                return '<span class="text-secondary text-xs font-weight-bold">'.$o->price.'</span>';
+                return '<span class="text-secondary text-xs font-weight-bold">Rp. '.number_format($o->price, 0, ',', '.').'</span>';
             })
             ->editColumn('action', function($o){
                 return view('apoteker.obat._action', compact('o'));
@@ -67,6 +67,7 @@ class ObatController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge(['price' => implode('', explode('.', $request->price))]);
         $validate = $request->validate([
             'name' => 'required',
             'type' => 'required',
@@ -74,7 +75,9 @@ class ObatController extends Controller
             'price' => 'required|numeric'
         ]);
         Obat::create($validate);
-        return redirect()->route('obat.index')->with('success', 'Obat berhasil ditambahkan');
+        return $request->ajax()?
+            response()->json('Obat berhasil ditambahkan')
+            :redirect()->route('obat.index')->with('success', 'Obat berhasil ditambahkan');
     }
 
     /**
@@ -111,6 +114,7 @@ class ObatController extends Controller
      */
     public function update(Request $request, Obat $obat)
     {
+        $request->merge(['price' => implode('', explode('.', $request->price))]);
         $validate = $request->validate([
             'name' => 'required',
             'type' => 'required',
@@ -118,7 +122,9 @@ class ObatController extends Controller
             'price' => 'required|numeric'
         ]);
         $obat->update($validate);
-        return redirect()->route('obat.index')->with('success', 'Data obat berhasil diupdate');
+        return $request->ajax()?
+            response()->json('Data obat berhasil diupdate')
+            :redirect()->route('obat.index')->with('success', 'Data obat berhasil diupdate');
     }
 
     /**
@@ -130,6 +136,8 @@ class ObatController extends Controller
     public function destroy(Obat $obat)
     {
         $obat->delete();
-        return back()->with('success', 'Data obat berhasil dihapus');
+        return request()->ajax()?
+            response()->json('Data obat berhasil dihapus')
+            :back()->with('success', 'Data obat berhasil dihapus');
     }
 }

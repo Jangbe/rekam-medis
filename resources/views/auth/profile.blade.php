@@ -65,22 +65,8 @@
             <div class="card-body p-3">
               <hr class="horizontal gray-light my-2">
               <ul class="list-group">
-                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Full Name:</strong> &nbsp; Alec M. Thompson</li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Mobile:</strong> &nbsp; (44) 123 1234 123</li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp; alecthompson@mail.com</li>
-                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Location:</strong> &nbsp; USA</li>
-                <li class="list-group-item border-0 ps-0 pb-0">
-                  <strong class="text-dark text-sm">Social:</strong> &nbsp;
-                  <a class="btn btn-facebook btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
-                    <i class="fab fa-facebook fa-lg"></i>
-                  </a>
-                  <a class="btn btn-twitter btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
-                    <i class="fab fa-twitter fa-lg"></i>
-                  </a>
-                  <a class="btn btn-instagram btn-simple mb-0 ps-1 pe-2 py-0" href="javascript:;">
-                    <i class="fab fa-instagram fa-lg"></i>
-                  </a>
-                </li>
+                <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Name:</strong> &nbsp; {{ auth()->user()->name }}</li>
+                <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp; {{ auth()->user()->email }}</li>
               </ul>
             </div>
           </div>

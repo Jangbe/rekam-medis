@@ -22,7 +22,7 @@
                         <i class="fa fa-user me-sm-1"></i>
                         <span class="d-sm-inline d-none">{{ auth()->user()->name }}</span>
                     </a>
-                    <ul class="dropdown-menu w-50" aria-labelledby="dropdownMenuButton1">
+                    <ul class="dropdown-menu dropdown-menu-end w-50" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item" href="/profile">
                                 <i class="fa fa-user"></i>
                                 Profile
@@ -143,7 +143,6 @@
 
 <script>
     function logout(e){
-        console.log(e);
         document.getElementById('logout').submit()
     }
 </script>

@@ -28,7 +28,6 @@ class MedicalRecordController extends Controller
     public function create()
     {
         $last_registered = MedicalRecord::whereDate('created_at', date('Y-m-d'))->latest()->first('order');
-        // dd($last_registered);
         $order = 1;
         if($last_registered){
             $order += $last_registered->order;

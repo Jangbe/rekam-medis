@@ -8,33 +8,42 @@
                 </div>
                 <div class="modal-body">
                     @csrf
-                    @method($method??'post')
                     <div class="row">
                         <div class="col-md-6 col-12 mb-4">
+                            <label for="" class="form-label">Nama</label>
                             <div class="input-group input-group-outline">
-                                <label for="" class="form-label">Nama</label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$obat->name??'') }}">
                                 @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
                         <div class="col-md-6 col-12 mb-4">
+                            <label for="" class="form-label">Type</label>
                             <div class="input-group input-group-outline">
-                                <label for="" class="form-label">Type</label>
-                                <input type="text" class="form-control @error('type') is-invalid @enderror" name="type" value="{{ old('type',$obat->type??'') }}">
+                                <select name="type" id="type" class="form-control @error('type') is-invalid @enderror">
+                                    <option value="">--Pilih Type--</option>
+                                    @foreach (['Sirup','Serbuk','Kapsul','Tablet'] as $opt)
+                                        <option value="{{ $opt }}">{{ $opt }}</option>
+                                    @endforeach
+                                </select>
                                 @error('type') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
                         <div class="col-md-6 col-12 mb-4">
+                            <label for="" class="form-label">Satuan</label>
                             <div class="input-group input-group-outline">
-                                <label for="" class="form-label">Satuan</label>
-                                <input type="text" class="form-control @error('satuan') is-invalid @enderror" name="satuan" value="{{ old('satuan',$obat->satuan??'') }}">
+                                <select name="satuan" id="satuan" class="form-control @error('satuan') is-invalid @enderror">
+                                    <option value="">--Pilih Satuan--</option>
+                                    @foreach (['g'=>'Gram','ml'=>'Mili','lb'=>'Lembar'] as $i => $v)
+                                        <option value="{{ $i }}">{{ $v }} ({{ $i }})</option>
+                                    @endforeach
+                                </select>
                                 @error('satuan') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
                         <div class="col-md-6 col-12 mb-4">
+                            <label for="" class="form-label">Harga</label>
                             <div class="input-group input-group-outline">
-                                <label for="" class="form-label">Harga</label>
-                                <input type="number" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price',$obat->price??'') }}">
+                                <input type="text" inputmode="numeric" class="form-control price @error('price') is-invalid @enderror" name="price" value="{{ old('price',$obat->price??'') }}">
                                 @error('price') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
@@ -48,3 +57,24 @@
         </div>
     </div>
 </div>
+
+@push('js')
+    <script>
+        $('.price').on('keyup', function(){
+            let number = to_number($(this).val())
+            let price = number_format(number)
+            $(this).val(price)
+        })
+        function number_format(x) {
+            x = x.toString();
+            var pattern = /(-?\d+)(\d{3})/;
+            while (pattern.test(x))
+                x = x.replace(pattern, "$1.$2");
+            return x;
+        }
+        function to_number(x){
+            x = x.split('.').join('')
+            return x
+        }
+    </script>
+@endpush

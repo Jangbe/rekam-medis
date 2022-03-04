@@ -25,25 +25,7 @@
             </tr>
           </thead>
           <tbody>
-              {{-- @foreach ($obats as $o)
-                <tr>
-                    <td>
 
-                    </td>
-                    <td>
-
-                    </td>
-                    <td class="align-middle text-center text-sm">
-
-                    </td>
-                    <td class="align-middle text-center">
-
-                    </td>
-                    <td class="align-middle">
-
-                    </td>
-                </tr>
-              @endforeach --}}
           </tbody>
         </table>
       </div>
@@ -61,29 +43,57 @@
             "sort":false,
             "ajax": "/apoteker/obat/ajax",
             "columns": [
-                {"data":"name"},
-                {"data":"type"},
-                {"data":"satuan"},
-                {"data":"price"},
-                {"data":"action","searchable":false},
+                {"data":"name", 'className':'text-center'},
+                {"data":"type", 'className':'text-center'},
+                {"data":"satuan", 'className':'text-center'},
+                {"data":"price", 'className':'text-center'},
+                {"data":"action","searchable":false, "className":"w-20"},
             ]
         });
         function create(){
             $('#title').html('Tambah Data Obat');
+            $('#form').attr('action', '/apoteker/obat');
             ['name','type','satuan','price'].forEach(v => {
-                $('input[name='+v+']').val('')
+                $('input[name='+v+'],select[name='+v+']').val('')
             })
             $('#modal-obat').modal('toggle')
         }
         function edit(data){
             $('#title').html('Edit Obat '+data.name);
+            $('#form').attr('action', '/apoteker/obat/'+data.id);
             for(var i in data){
-                $('input[name='+i+']').val(data[i]).focus()
+                $('input[name='+i+'],select[name='+i+']').val(data[i])
             }
+            $('input[name=price]').val(number_format(data.price))
             $('#modal-obat').modal('toggle')
         }
-        function store(){
-
-        }
+        $('#form').on('submit', function(e){
+            e.preventDefault()
+            let url = $(this).attr('action');
+            let data = $(this).serializeArray();
+            data.push({name: '_method',value:url=='/apoteker/obat'?'post':'put'})
+            $.ajax({
+                url,
+                method: 'post',
+                data,
+                success: (result)=>{
+                    Toast.fire({
+                        icon: 'success',
+                        title: result
+                    })
+                    table.draw()
+                    $('#modal-obat').modal('toggle')
+                },error: ({responseJSON})=>{
+                    $('.is-invalid').removeClass('is-invalid');
+                    let errors = responseJSON.errors
+                    for(let i in errors){
+                        $(`input[name=${i}]`).addClass('is-invalid').parent().append(
+                            `<div class="invalid-feedback">${errors[i][0]}</div>`
+                        )
+                        console.log(errors[i]);
+                    }
+                }
+            })
+        })
     </script>
 @endpush

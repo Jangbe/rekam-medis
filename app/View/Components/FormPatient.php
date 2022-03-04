@@ -7,7 +7,7 @@ use Illuminate\View\Component;
 
 class FormPatient extends Component
 {
-    public $patient;
+    public Patient $patient;
     /**
      * Create a new component instance.
      *

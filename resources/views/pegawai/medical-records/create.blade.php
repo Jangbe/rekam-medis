@@ -37,7 +37,7 @@
                     </div>
                 </div>
             </div>
-            <div id="data-lama" class="d-none">
+            <div id="data-lama" style="display: none">
                 <hr>
                 <h4 class="text-center">Data Pasien Lama</h4>
                 <div class="row" >
@@ -135,11 +135,11 @@
         })
         $('input[name=status]').on('change', function(){
             if($(this).val()=='baru'){
-                $('#data-lama').addClass('d-none')
-                $('#data-baru').removeClass('d-none');
+                $('#data-lama').fadeOut()
+                $('#data-baru').fadeIn();
             }else{
-                $('#data-baru').addClass('d-none')
-                $('#data-lama').removeClass('d-none');
+                $('#data-baru').fadeOut()
+                $('#data-lama').fadeIn();
             }
         })
         $('.select2').on('select2:select', function(){

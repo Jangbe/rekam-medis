@@ -16,7 +16,7 @@
         <form action="{{ $action }}" method="post">
             @csrf
             @method($method??'post')
-            <x-form-patient :patient="$patient"/>
+            <x-form-patient :patient="$patient??new App\Models\Patient"/>
             <button class="btn btn-primary">Simpan</button>
         </form>
     </div>
