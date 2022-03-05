@@ -29,11 +29,11 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-12 mb-4">
-                            <label for="" class="form-label">Satuan</label>
+                            <label for="" class="form-label">Bentuk</label>
                             <div class="input-group input-group-outline">
                                 <select name="satuan" id="satuan" class="form-control @error('satuan') is-invalid @enderror">
-                                    <option value="">--Pilih Satuan--</option>
-                                    @foreach (['g'=>'Gram','ml'=>'Mili','lb'=>'Lembar'] as $i => $v)
+                                    <option value="">--Pilih Bentuk--</option>
+                                    @foreach (['cap'=>'Kapsul','gtt'=>'Tetes','tab'=>'Tablet'] as $i => $v)
                                         <option value="{{ $i }}">{{ $v }} ({{ $i }})</option>
                                     @endforeach
                                 </select>

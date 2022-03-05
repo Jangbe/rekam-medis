@@ -33,18 +33,6 @@
                     <td>{{ $med_rec->patient->name }}</td>
                     <td>{{ $med_rec->patient->date_birth }}</td>
                     <td>{{ $med_rec->patient->parent }}</td>
-                    {{-- <td>
-                        <a href="{{ route('medical-records.edit', $med_rec) }}" class="btn btn-sm btn-dark text-warning font-weight-bold text-xs mr-3" data-toggle="tooltip" data-original-title="Edit user">
-                            Edit
-                        </a>
-                        <form action="{{ route('medical-records.destroy', $med_rec) }}" method="post" class="d-inline">
-                            @csrf
-                            @method('delete')
-                            <button class="btn btn-sm btn-dark text-danger delete-data font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                                Delete
-                            </button>
-                        </form>
-                    </td> --}}
                 </tr>
             @endforeach
           </tbody>

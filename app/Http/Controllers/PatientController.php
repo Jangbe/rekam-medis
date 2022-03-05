@@ -41,6 +41,7 @@ class PatientController extends Controller
         $validate = $request->validate([
             'name' => 'required',
             'birth' => 'required|date',
+            'gender' => 'required|in:L,P',
             'father_name' => 'required',
             'mother_name' => 'required',
             'phone' => 'required|numeric',
@@ -101,6 +102,7 @@ class PatientController extends Controller
         $validate = $request->validate([
             'name' => 'required',
             'birth' => 'required|date',
+            'gender' => 'required|in:L,P',
             'father_name' => 'required',
             'mother_name' => 'required',
             'phone' => 'required|numeric',

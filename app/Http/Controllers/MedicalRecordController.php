@@ -51,6 +51,7 @@ class MedicalRecordController extends Controller
             'order' => 'required',
             'name' => 'required_if:status,baru',
             'birth' => 'required_if:status,baru|nullable|date',
+            'gender' => 'required_if:status,baru|in:L,P',
             'father_name' => 'required_if:status,baru',
             'mother_name' => 'required_if:status,baru',
             'phone' => 'required_if:status,baru|nullable|numeric',

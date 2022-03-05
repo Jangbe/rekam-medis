@@ -7,7 +7,16 @@
                 @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
         </div>
-        <div class="col-md-6 col-12 mb-4">
+        <div class="col-md-2 col-6">
+            <label for="gender">Jenis Kelamin</label>
+            <div class="input-group input-group-outline">
+                <select name="gender" id="gender" class="form-control">
+                    <option value="L">Laki-laki</option>
+                    <option value="P">Perempuan</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-4 col-6 mb-4">
             <label for="" class="form-label">Tgl Lahir</label>
             <div class="input-group input-group-outline">
                 <input type="date" class="form-control @error('birth') is-invalid @enderror" name="birth" value="{{ old('birth',$patient->birth??'') }}">

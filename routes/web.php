@@ -16,11 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
+Route::view('/', 'welcome');
 Route::view('table', 'table')->middleware(['auth','role:admin,apoteker']);
 
 Auth::routes(['register'=>false]);
