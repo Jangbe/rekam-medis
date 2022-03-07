@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('receipts', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('medical_record_id');
-            $table->unsignedBigInteger('obat_id');
-            $table->string('amount');
-            $table->timestamps();
+        Schema::table('medical_records', function (Blueprint $table) {
+            $table->string('receipt', 100)->after('theraphy')->nullable();
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('receipts');
+        Schema::table('medical_records', function (Blueprint $table) {
+            $table->dropColumn('receipt');
+        });
     }
 };

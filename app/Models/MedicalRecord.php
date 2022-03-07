@@ -20,4 +20,9 @@ class MedicalRecord extends Model
     {
         return !is_null($this->anamnesa);
     }
+
+    public function receipts()
+    {
+        return $this->hasMany(Receipt::class);
+    }
 }

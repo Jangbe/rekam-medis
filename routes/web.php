@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'welcome');
+// Route::view('/', 'welcome');
+Route::redirect('/', 'login');
 Route::view('table', 'table')->middleware(['auth','role:admin,apoteker']);
 
 Auth::routes(['register'=>false]);
@@ -24,6 +25,7 @@ Route::view('profile', 'auth.profile')->middleware('auth');
 Route::prefix('apoteker')->middleware(['auth','role:apoteker'])->group(function () {
     Route::get('obat/ajax', [ObatController::class, 'ajax']);
     Route::resource('obat', ObatController::class);
+    Route::get('pemberian-obat', [ObatController::class, 'receipt']);
 });
 
 Route::prefix('pegawai')->middleware(['auth','role:pegawai'])->group(function () {
@@ -34,6 +36,9 @@ Route::prefix('pegawai')->middleware(['auth','role:pegawai'])->group(function ()
 Route::prefix('dokter')->middleware(['auth', 'role:dokter'])->group(function(){
     Route::get('medical-records', [MedicalRecordController::class, 'index']);
     Route::get('pemeriksaan', [MedicalRecordController::class, 'pemeriksaan']);
+    Route::post('pemeriksaan', [MedicalRecordController::class, 'pemeriksaan']);
+    Route::get('resep', [MedicalRecordController::class, 'receipt']);
+    Route::post('resep', [MedicalRecordController::class, 'receipt']);
 });
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

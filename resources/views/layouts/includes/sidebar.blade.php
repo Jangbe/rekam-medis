@@ -30,15 +30,14 @@
                     <span class="nav-link-text ms-1">Obat</span>
                 </a>
             </li>
-            {{-- <li class="nav-item">
-                <a class="nav-link text-white {{ request()->is('dashboard')?'active bg-gradient-primary':'' }}  " href="/dashboard">
+            <li class="nav-item">
+                <a class="nav-link text-white {{ request()->is('apoteker/pemberian-obat')?'active bg-gradient-primary':'' }}  " href="/apoteker/pemberian-obat">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">dashboard</i>
+                        <i class="fa fa-hospital-user"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Dashboard</span>
+                    <span class="nav-link-text ms-1">Pemberian Obat</span>
                 </a>
-            </li> --}}
-
+            </li>
             @elseif(auth()->user()->role=='pegawai')
             <li class="nav-item">
                 <a class="nav-link text-white {{ request()->routeIs('patients.*')?'active bg-gradient-primary':'' }}  " href="/pegawai/patients">

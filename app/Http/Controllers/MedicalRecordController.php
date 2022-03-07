@@ -6,6 +6,7 @@ use App\Models\MedicalRecord;
 use App\Models\Patient;
 use Faker\Provider\Medical;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MedicalRecordController extends Controller
 {
@@ -83,11 +84,51 @@ class MedicalRecordController extends Controller
         return redirect()->route('medical-records.index')->with('success', 'Pendaftaran berhasil dilakukan.');
     }
 
-    public function pemeriksaan()
+    public function pemeriksaan(Request $request)
     {
-        $patient = MedicalRecord::whereDate('created_at', date('Y-m-d'))->where('diagnose', null)->first();
-        // dd($patient);
-        return view('dokter.pemeriksaan.index', compact('patient'));
+        if(request()->method()=='GET'){
+            $patient = MedicalRecord::whereDate('created_at', date('Y-m-d'))->where('diagnose', null)->first();
+            return view('dokter.pemeriksaan.index', compact('patient'));
+        }else{
+            $validate = $request->validate([
+                'anamnesa' => 'required',
+                'physical_check' => 'required',
+                'diagnose' => 'required',
+                'theraphy' => 'nullable'
+            ]);
+            $request->session()->put(['med_rec'=>$validate]);
+            return redirect('dokter/resep');
+        }
+    }
+
+    public function receipt(Request $request)
+    {
+        $med_rec = MedicalRecord::whereDate('created_at', date('Y-m-d'))->where('diagnose', null)->first();
+        if($request->method()=='GET'){
+            return view('dokter.pemeriksaan.resep', ['patient'=>$med_rec->patient]);
+        }else{
+            $image_64 = $request['receipt']; //your base64 encoded data
+
+            $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
+
+            $replace = substr($image_64, 0, strpos($image_64, ',')+1);
+
+            // find substring fro replace here eg: data:image/png;base64,
+
+            $image = str_replace($replace, '', $image_64);
+
+            $image = str_replace(' ', '+', $image);
+
+            $imageName = \Str::random(10).'.'.$extension;
+
+            Storage::disk('public')->put($imageName, base64_decode($image));
+
+            $data = $request->session()->get('med_rec');
+            $data['receipt'] = $imageName;
+            $med_rec->update($data);
+            $request->session()->forget('med_rec');
+            return redirect('dokter/pemeriksaan')->with(['success'=>'Pemeriksaan dan pemberian obat telah dilakukan.']);
+        }
     }
 
     /**

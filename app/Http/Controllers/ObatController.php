@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MedicalRecord;
 use App\Models\Obat;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -81,17 +82,6 @@ class ObatController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Obat  $obat
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Obat $obat)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Obat  $obat
@@ -139,5 +129,12 @@ class ObatController extends Controller
         return request()->ajax()?
             response()->json('Data obat berhasil dihapus')
             :back()->with('success', 'Data obat berhasil dihapus');
+    }
+
+    public function receipt()
+    {
+        $med_rec = MedicalRecord::whereDate('created_at', date('Y-m-d'))
+                ->doesntHave('receipts')->first();
+        return view('pegawai.pemberian-obat', compact('med_rec'));
     }
 }
