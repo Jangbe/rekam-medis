@@ -22,6 +22,10 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
   <link rel="stylesheet" href="{{ asset('css/dataTables.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/select2-bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/datepicker.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/daterangepicker.css') }}">
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('admin/assets/css/material-dashboard.css?v=3.0.0') }}" rel="stylesheet" />
   @stack('css')
@@ -39,7 +43,9 @@
         @include('layouts.includes.footer')
     </div>
   </main>
-  @include('layouts.includes.setting')
+  @if (env('APP_SETTING'))
+      @include('layouts.includes.setting')
+  @endif
   <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js" integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!--   Core JS Files   -->
   <script src="{{ asset('js/jquery-3.6.0.min.js') }}"></script>
@@ -49,10 +55,18 @@
   <script src="{{ asset('admin/assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
   <script src="{{ asset('admin/assets/js/plugins/chartjs.min.js') }}"></script>
   <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
+  <script src="{{ asset('js/select2.min.js') }}"></script>
   <script src="{{ asset('js/dataTables.min.js') }}"></script>
+  <script src="{{ asset('js/moment.min.js') }}"></script>
+  <script src="{{ asset('js/datepicker.min.js') }}"></script>
+  <script src="{{ asset('js/daterangepicker.min.js') }}"></script>
   <script src="{{ asset('js/admin.js') }}"></script>
   @stack('js')
   <script>
+      $('[data-toggle="datepicker"]').datepicker({
+          format: 'YYYY-MM-DD',
+      });
+      $('[data-toggle="daterangepicker"]').daterangepicker();
       $(document).on('click','.delete-data', function(e){
         let ajax = $(this).data('ajax')
         e.preventDefault()
@@ -77,6 +91,10 @@
                 }
             }
         })
+    })
+    $('.select2').select2({
+        width: '100%',
+        theme: 'bootstrap'
     })
   </script>
   @if (session()->has('success'))

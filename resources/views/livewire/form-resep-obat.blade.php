@@ -30,9 +30,9 @@
                             <tr>
                                 <td>
                                     <div class="input-group input-group-outline">
-                                        <select wire:model="receipts.{{ $i }}.obat_id" id="" class="form-control @error("receipts.$i.obat_id") is-invalid @enderror" wire:change='setPrice({{ $i }})'>
+                                        <select wire:model="receipts.{{ $i }}.obat_id" id="" class="select2-obat @error("receipts.$i.obat_id") is-invalid @enderror" data-i="{{$i}}" wire:change='setPrice({{$i}})'>
                                             <option value="">--Pilih Obat--</option>
-                                            @foreach ($obats as $obat)
+                                            @foreach ($obats->sortBy('name') as $obat)
                                                 <option value="{{ $obat->id }}">{{ $obat->name }}</option>
                                             @endforeach
                                         </select>
@@ -53,7 +53,7 @@
                             <td colspan="3" style="text-align: right">Harga Dokter</td>
                             <td>
                                 <div class="input-group input-group-outline">
-                                    <input type="number" class="form-control" wire:model='harga_dokter'>
+                                    <input type="number" class="form-control" wire:model='doctor_price'>
                                 </div>
                             </td>
                         </tr>
@@ -61,7 +61,7 @@
                             <td colspan="3" style="text-align: right">Total</td>
                             <td>
 
-                                Rp. {{ number_format(collect($receipts)->sum('subtotal')+intval($harga_dokter) ,0,',','.') }}
+                                Rp. {{ number_format(collect($receipts)->sum('subtotal')+intval($doctor_price) ,0,',','.') }}
                             </td>
                         </tr>
                         <tr></tr>
@@ -73,4 +73,22 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded',function() {
+            // window.initSelectObat=()=>{
+            //     $('.select2-obat').select2({
+            //         placeholder: 'Select a Obat',
+            //         allowClear: true});
+            // }
+            // initSelectObat();
+            // $('.select2-obat').on('change', function (e) {
+            //     livewire.emit('setPrice', e.target.dataset.i)
+            // });
+            // window.livewire.on('select2-obat',()=>{
+            //     initSelectObat();
+            // });
+
+        });
+    </script>
 </div>

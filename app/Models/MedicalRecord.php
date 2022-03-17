@@ -16,6 +16,11 @@ class MedicalRecord extends Model
         return $this->belongsTo(Patient::class);
     }
 
+    public function rujukan($a)
+    {
+        return json_decode($this->rujukan, true)[$a];
+    }
+
     public function getIsCheckedAttribute()
     {
         return !is_null($this->anamnesa);
@@ -25,4 +30,5 @@ class MedicalRecord extends Model
     {
         return $this->hasMany(Receipt::class);
     }
+
 }

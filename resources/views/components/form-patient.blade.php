@@ -48,7 +48,7 @@
         <div class="col-md-6 col-12 mb-4">
             <label for="" class="form-label">Provinsi</label>
             <div class="input-group input-group-outline">
-                <select id="provincy" class="form-control @error('provincy') is-invalid @enderror" name="provincy">
+                <select id="provincy" class="select2 @error('provincy') is-invalid @enderror" name="provincy">
                 </select>
                 @error('provincy') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
@@ -56,7 +56,7 @@
         <div class="col-md-6 col-12 mb-4">
             <label for="" class="form-label">Kab / Kota</label>
             <div class="input-group input-group-outline">
-                <select id="regency" class="form-control @error('regency') is-invalid @enderror" name="regency">
+                <select id="regency" class="select2 @error('regency') is-invalid @enderror" name="regency">
                 </select>
                 @error('regency') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
@@ -64,14 +64,14 @@
         <div class="col-md-6 col-12 mb-4">
             <label for="" class="form-label">Kecamatan</label>
             <div class="input-group input-group-outline">
-                <select id="district" class="form-control @error('district') is-invalid @enderror" name="district"></select>
+                <select id="district" class="select2 @error('district') is-invalid @enderror" name="district"></select>
                 @error('district') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
         </div>
         <div class="col-md-6 col-12 mb-4">
             <label for="" class="form-label">Kelurahan</label>
             <div class="input-group input-group-outline">
-                <select id="village" class="form-control @error('village') is-invalid @enderror" name="village"></select>
+                <select id="village" class="select2 @error('village') is-invalid @enderror" name="village"></select>
                 @error('village') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
         </div>
@@ -100,7 +100,7 @@
             let id = $(this).find(':selected').data('id')
             setData('villages/'+id+'.json', 'village');
         })
-        var api = 'http://www.emsifa.com/api-wilayah-indonesia/api/';
+        var api = '/api-wilayah-indonesia/';
         async function setData(region, node){
             $.ajax({
                 url: api+region,
@@ -125,12 +125,11 @@
     @foreach (['provincy','regency','district','village'] as $select)
         @if (old($select))
             <script>
-                console.log('{{ old($select) }}');
                 $('#{{ $select }}').val('{{ old($select) }}').trigger('change')
             </script>
         @endif
     @endforeach
-    @if (isset($patient))
+    @if ($patient->name)
         @foreach ($patient->only('provincy','regency','district','village') as $key => $item)
         <script>
             $('#{{ $key }}').val("{{ $item }}").trigger('change')

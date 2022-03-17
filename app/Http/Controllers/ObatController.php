@@ -68,11 +68,12 @@ class ObatController extends Controller
      */
     public function store(Request $request)
     {
-        $request->merge(['price' => implode('', explode('.', $request->price))]);
+        $request->merge(['price' => str_replace('.', '', $request->price)]);
         $validate = $request->validate([
             'name' => 'required',
-            'type' => 'required',
-            'satuan' => 'required',
+            'unit' => 'required',
+            // 'type' => 'required',
+            // 'satuan' => 'required',
             'price' => 'required|numeric'
         ]);
         Obat::create($validate);
@@ -107,8 +108,9 @@ class ObatController extends Controller
         $request->merge(['price' => implode('', explode('.', $request->price))]);
         $validate = $request->validate([
             'name' => 'required',
-            'type' => 'required',
-            'satuan' => 'required',
+            'unit' => 'required',
+            // 'type' => 'required',
+            // 'satuan' => 'required',
             'price' => 'required|numeric'
         ]);
         $obat->update($validate);
@@ -133,8 +135,15 @@ class ObatController extends Controller
 
     public function receipt()
     {
-        $med_rec = MedicalRecord::whereDate('created_at', date('Y-m-d'))
+        $med_rec = MedicalRecord::whereDate('created_at', date('Y-m-d'))->where('diagnose', '!=', null)->where('rujukan',null)
                 ->doesntHave('receipts')->first();
-        return view('pegawai.pemberian-obat', compact('med_rec'));
+        return view('apoteker.pemberian-obat', compact('med_rec'));
+    }
+
+    public function update_stock(Request $request, Obat $obat)
+    {
+        $stok = $obat->stock + $request->stock;
+        $obat->update(['stock'=>$stok]);
+        return response()->json('Stok '.$obat->name.' berhasil ditambah');
     }
 }

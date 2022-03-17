@@ -44,7 +44,7 @@
                     <div class="col-md-6 col-12 mb-4">
                         <label for="" class="form-label">Nama</label>
                         <div class="input-group input-group-outline">
-                            <select class="form-control select2 @error('patient_id') is-invalid @enderror" name="patient_id">
+                            <select class="form-control select2 old_patient @error('patient_id') is-invalid @enderror" name="patient_id">
                                 <option value="">---Pilih Berdasarkan No RM---</option>
                                 @foreach ($patients as $patient)
                                     <option value="{{ $patient->id }}" data-patient="{{ $patient }}">{{ $patient->no_rm }}</option>
@@ -56,7 +56,7 @@
                     <div class="col-md-6 col-12 mb-4">
                         <label for="" class="form-label">Nama</label>
                         <div class="input-group input-group-outline">
-                            <select class="form-control select2 @error('patient_id') is-invalid @enderror" name="patient_id">
+                            <select class="form-control select2 old_patient @error('patient_id') is-invalid @enderror" name="patient_id">
                                 <option value="">---Pilih Berdasarkan Nama---</option>
                                 @foreach ($patients as $patient)
                                     <option value="{{ $patient->id }}" data-patient="{{ $patient }}">{{ $patient->name }}</option>
@@ -115,24 +115,35 @@
                 <h4 class="text-center">Data Pasien Baru</h4>
                 <x-form-patient id="patient"/>
             </div>
+            <hr class="my-2">
+            <div class="form-group row mb-3">
+                <div class="col-4">
+                    <label for="">Tinggi Badan</label>
+                    <div class="input-group input-group-outline">
+                        <input type="number" name="physical_check[tb]" id="physical_check" class="form-control">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label for="">Berat Badan</label>
+                    <div class="input-group input-group-outline">
+                        <input type="number" name="physical_check[bb]" id="physical_check" class="form-control">
+                    </div>
+                </div>
+                <div class="col-4">
+                    <label for="">Suhu Badan</label>
+                    <div class="input-group input-group-outline">
+                        <input type="number" name="physical_check[suhu]" id="physical_check" class="form-control">
+                    </div>
+                </div>
+            </div>
             <button class="btn btn-primary">Simpan</button>
         </form>
     </div>
   </div>
 @endsection
 
-@push('css')
-    <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/select2-bootstrap.min.css') }}">
-@endpush
-
 @push('js')
-    <script src="{{ asset('js/select2.min.js') }}"></script>
     <script>
-        $('.select2').select2({
-            width: '100%',
-            theme: 'bootstrap'
-        })
         $('input[name=status]').on('change', function(){
             if($(this).val()=='baru'){
                 $('#data-lama').fadeOut()
@@ -142,7 +153,7 @@
                 $('#data-lama').fadeIn();
             }
         })
-        $('.select2').on('select2:select', function(){
+        $('.old_patient').on('select2:select', function(){
             $('.select2').val($(this).val()).trigger('change')
             let patient = $(this).find(':selected').data('patient')
             if(patient){

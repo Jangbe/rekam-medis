@@ -18,10 +18,12 @@
           <thead>
             <tr>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Type</th>
-              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Satuan</th>
+              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Sediaan Obat</th>
+              {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Type</th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Satuan</th> --}}
               <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Harga</th>
-              <th class="text-secondary opacity-7"></th>
+              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stok</th>
+              <th class="text-secondary opacity-7 text-center">Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -33,6 +35,7 @@
   </div>
 
   @include('apoteker.obat.modal')
+  @include('apoteker.obat._modal-stock')
 @endsection
 
 @push('js')
@@ -44,9 +47,11 @@
             "ajax": "/apoteker/obat/ajax",
             "columns": [
                 {"data":"name", 'className':'text-center'},
-                {"data":"type", 'className':'text-center'},
-                {"data":"satuan", 'className':'text-center'},
+                {"data":"unit", 'className':'text-center'},
+                // {"data":"type", 'className':'text-center'},
+                // {"data":"satuan", 'className':'text-center'},
                 {"data":"price", 'className':'text-center'},
+                {"data":"stock", 'className':'text-center'},
                 {"data":"action","searchable":false, "className":"w-20"},
             ]
         });
@@ -67,6 +72,28 @@
             $('input[name=price]').val(number_format(data.price))
             $('#modal-obat').modal('toggle')
         }
+        function stock(data){
+            $('#form-stock').attr('action', `/apoteker/update-stok-obat/${data.id}`);
+            $('#title-stock').text(`Stok Obat ${data.name} (Sisa Stok: ${data.stock})`);
+            $('#modal-stock').modal('toggle');
+        }
+        $('#form-stock').on('submit', function(e){
+            e.preventDefault()
+            let url = $(this).attr('action');
+            $.ajax({
+                url,
+                method: 'post',
+                data: $(this).serializeArray(),
+                success: (title) => {
+                    Toast.fire({
+                        icon:'success',
+                        title
+                    })
+                    table.draw()
+                    $('#modal-stock').modal('toggle')
+                }
+            })
+        })
         $('#form').on('submit', function(e){
             e.preventDefault()
             let url = $(this).attr('action');

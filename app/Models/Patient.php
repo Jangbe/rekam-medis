@@ -12,6 +12,11 @@ class Patient extends Model
     protected $guarded = ['id'];
     protected $appends = ['date_birth', 'parent', 'age', 'month'];
 
+    public function med_recs()
+    {
+        return $this->hasMany(MedicalRecord::class);
+    }
+
     public function getDateBirthAttribute(){
         return $this->birth.' ('.Carbon::parse($this->birth)->diff(Carbon::now())->format('%y tahun %m bulan %d hari').')';
     }
@@ -23,7 +28,19 @@ class Patient extends Model
 
     public function getAgeAttribute()
     {
-        return Carbon::parse($this->birth)->diff(Carbon::now())->format('%y tahun %m bulan %d hari');
+        $age = Carbon::parse($this->birth)->diff(Carbon::now());
+        // ->format('%y tahun %m bulan %d hari');
+        $text = '';
+        if($age->format('%y')>0){
+            $text .= $age->format('%y tahun');
+        }
+        if($age->format('%m')>0){
+            $text .= $age->format(' %m bulan');
+        }
+        if($age->format('%d')>0){
+            $text .= $age->format(' %d hari');
+        }
+        return $text;
     }
 
     public function getMonthAttribute()

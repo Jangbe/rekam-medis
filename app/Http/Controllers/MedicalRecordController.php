@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MedicalRecordExport;
 use App\Models\MedicalRecord;
 use App\Models\Patient;
-use Faker\Provider\Medical;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use Rawilk\Printing\Facades\Printing;
+use Yajra\DataTables\Facades\DataTables;
 
 class MedicalRecordController extends Controller
 {
@@ -79,26 +84,55 @@ class MedicalRecordController extends Controller
         }
         MedicalRecord::create([
             'patient_id' => $patient_id,
-            'order' => $validate['order']
+            'order' => $validate['order'],
+            'physical_check' => json_encode($request->physical_check)
         ]);
         return redirect()->route('medical-records.index')->with('success', 'Pendaftaran berhasil dilakukan.');
     }
 
     public function pemeriksaan(Request $request)
     {
+        $patient = MedicalRecord::whereDate('created_at', date('Y-m-d'))->where('diagnose', null)->first();
         if(request()->method()=='GET'){
-            $patient = MedicalRecord::whereDate('created_at', date('Y-m-d'))->where('diagnose', null)->first();
             return view('dokter.pemeriksaan.index', compact('patient'));
         }else{
             $validate = $request->validate([
                 'anamnesa' => 'required',
                 'physical_check' => 'required',
                 'diagnose' => 'required',
-                'theraphy' => 'nullable'
+                'theraphy' => 'nullable',
+                'rujukan' => 'nullable|array'
             ]);
-            $request->session()->put(['med_rec'=>$validate]);
-            return redirect('dokter/resep');
+            if($request->has('rujukan')){
+                $patient->update($validate);
+                return redirect('dokter/pemeriksaan');
+            }else{
+                $request->session()->put(['med_rec'=>$validate]);
+                return redirect('dokter/resep');
+            }
         }
+    }
+
+    public function surat_sakit(Request $request,MedicalRecord $patient)
+    {
+        $hari = $request->hari;
+        $from = Carbon::now();
+        $to = Carbon::now()->addDays($hari);
+        $width = 11/2.54*72;
+        $height = 20/2.54*72;
+        $customPaper = array(0,0,$width,$height);
+        $pekerjaan = $request->pekerjaan;
+        $pdf = PDF::loadView('pdf.surat_sakit', compact('patient', 'pekerjaan','hari', 'from', 'to'))->setPaper($customPaper, 'portrait');
+        return $pdf->stream('test.pdf');
+    }
+
+    public function surat_rujukan(MedicalRecord $patient)
+    {
+        $width = 11/2.54*72;
+        $height = 20/2.54*72;
+        $customPaper = array(0,0,$width,$height);
+        $pdf = PDF::loadView('pdf.surat_rujukan', compact('patient'))->setPaper($customPaper, 'portrait');
+        return $pdf->stream('test.pdf');
     }
 
     public function receipt(Request $request)
@@ -108,19 +142,13 @@ class MedicalRecordController extends Controller
             return view('dokter.pemeriksaan.resep', ['patient'=>$med_rec->patient]);
         }else{
             $image_64 = $request['receipt']; //your base64 encoded data
-
             $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
-
             $replace = substr($image_64, 0, strpos($image_64, ',')+1);
 
             // find substring fro replace here eg: data:image/png;base64,
-
             $image = str_replace($replace, '', $image_64);
-
             $image = str_replace(' ', '+', $image);
-
-            $imageName = \Str::random(10).'.'.$extension;
-
+            $imageName = 'receipt/'.\Str::random(10).'.'.$extension;
             Storage::disk('public')->put($imageName, base64_decode($image));
 
             $data = $request->session()->get('med_rec');
@@ -131,48 +159,51 @@ class MedicalRecordController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\MedicalRecord  $medicalRecord
-     * @return \Illuminate\Http\Response
-     */
-    public function show(MedicalRecord $medicalRecord)
+    public function laporan(Request $request)
     {
-
+        if($request->ajax()){
+            $model = MedicalRecord::whereHas('patient')->with('patient');
+            if(!is_null($request->dates)){
+                $dates = explode(' - ', $request->dates);
+                $start = date('Y-m-d', strtotime($dates[0]));
+                $end = date('Y-m-d', strtotime($dates[1]));
+                $model = $model->whereBetween('created_at', [$start,$end]);
+            }
+            $dt = DataTables::collection($model->get());
+            return $dt
+                ->editColumn('created_at', function($patient){
+                    return $patient->created_at->format('d-m-Y H:i:s');
+                })
+                ->editColumn('name', function($patient){
+                    return '<p class="text-xs font-weight-bold mb-0">'.$patient->patient->name .'</p>
+                    <p class="text-xs text-secondary mb-0">'.$patient->patient->no_rm.'</p>';
+                })
+                ->escapeColumns([''])
+                ->toJson();
+        }
+        return view('pegawai.laporan');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\MedicalRecord  $medicalRecord
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(MedicalRecord $medicalRecord)
+    public function export(Request $request, $type)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\MedicalRecord  $medicalRecord
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, MedicalRecord $medicalRecord)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\MedicalRecord  $medicalRecord
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(MedicalRecord $medicalRecord)
-    {
-        //
+        if($request->has('printAll')){
+            $name = 'Laporan Rekam Medis Semua Tanggal';
+            $model = MedicalRecord::whereHas('patient')->get();
+        }else{
+            $request->validate([
+                'dateExport' => 'required',
+            ]);
+            $dates = explode(' - ', $request->dateExport);
+            $start = date('Y-m-d', strtotime($dates[0]));
+            $end = date('Y-m-d', strtotime($dates[1]));
+            $name = 'Laporan Rekam Medis dari tanggal '.$start.' sampai '.$end;
+            $model = MedicalRecord::whereHas('patient')->whereBetween('created_at', [$start,$end])->get();
+        }
+        if($type=='pdf'){
+            $pdf = PDF::loadView('pdf.medical-record', compact('model', 'name'));
+            return $pdf->stream($name.'.pdf');
+        }else if($type=='excel'){
+            return Excel::download(new MedicalRecordExport($model,$name), $name.'.xlsx');
+        }
     }
 }

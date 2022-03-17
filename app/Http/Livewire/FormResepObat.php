@@ -9,10 +9,15 @@ use Livewire\Component;
 
 class FormResepObat extends Component
 {
+    protected $listeners = ['setPrice'];
     public $receipts = [ ["obat_id" => '', 'amount' => 0,'price'=>0, 'subtotal' => 0] ];
-
     public $obats;
-    public $harga_dokter = 0;
+    public $doctor_price = 0;
+
+    // public function hydrate()
+    // {
+    //     $this->emit('select2-obat');
+    // }
 
     public function addObat()
     {
@@ -39,14 +44,18 @@ class FormResepObat extends Component
     {
         $med_rec = MedicalRecord::whereDate('created_at', date('Y-m-d'))
                 ->doesntHave('receipts')->first();
+        $med_rec->update(['doctor_price'=>$this->doctor_price]);
         $validate = $this->validate([
             'receipts' => 'required|array',
             'receipts.*.obat_id' => 'required',
             'receipts.*.amount' => 'required|numeric|min:1',
+            'doctor_price' => 'required'
         ],[],[
             'receipts.*.obat_id' => 'Obat'
         ]);
         foreach($this->receipts as $receipt){
+            $obat = Obat::find($receipt['obat_id']);
+            $obat->update(['stock' => $obat->stock - $receipt['amount']]);
             Receipt::create(array_merge($receipt, ['medical_record_id'=>$med_rec->id]));
         }
         return redirect('apoteker/pemberian-obat')->with('success', 'Pemberian obat berhasil');

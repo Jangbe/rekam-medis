@@ -9,7 +9,7 @@
                 <div class="modal-body">
                     @csrf
                     <div class="row">
-                        <div class="col-md-6 col-12 mb-4">
+                        <div class="col-12 mb-4">
                             <label for="" class="form-label">Nama</label>
                             <div class="input-group input-group-outline">
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name',$obat->name??'') }}">
@@ -17,27 +17,15 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-12 mb-4">
-                            <label for="" class="form-label">Type</label>
+                            <label for="" class="form-label">Sediaan Obat</label>
                             <div class="input-group input-group-outline">
-                                <select name="type" id="type" class="form-control @error('type') is-invalid @enderror">
-                                    <option value="">--Pilih Type--</option>
+                                <select name="unit" id="unit" class="form-control @error('unit') is-invalid @enderror">
+                                    <option value="">--Pilih Sediaan--</option>
                                     @foreach (['Sirup','Serbuk','Kapsul','Tablet'] as $opt)
                                         <option value="{{ $opt }}">{{ $opt }}</option>
                                     @endforeach
                                 </select>
-                                @error('type') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-12 mb-4">
-                            <label for="" class="form-label">Bentuk</label>
-                            <div class="input-group input-group-outline">
-                                <select name="satuan" id="satuan" class="form-control @error('satuan') is-invalid @enderror">
-                                    <option value="">--Pilih Bentuk--</option>
-                                    @foreach (['cap'=>'Kapsul','gtt'=>'Tetes','tab'=>'Tablet'] as $i => $v)
-                                        <option value="{{ $i }}">{{ $v }} ({{ $i }})</option>
-                                    @endforeach
-                                </select>
-                                @error('satuan') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                @error('unit') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
                         <div class="col-md-6 col-12 mb-4">

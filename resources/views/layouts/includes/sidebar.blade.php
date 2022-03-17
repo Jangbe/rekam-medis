@@ -55,6 +55,14 @@
                     <span class="nav-link-text ms-1">Pendaftaran</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ request()->routeIs('med-rec.laporan')?'active bg-gradient-primary':'' }}" href="/pegawai/medical-records/laporan">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons opacity-10">book</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Laporan</span>
+                </a>
+            </li>
             @elseif(auth()->user()->role=='dokter')
             <li class="nav-item">
                 <a class="nav-link text-white {{ request()->is('dokter/medical-records*')?'active bg-gradient-primary':'' }}  " href="/dokter/medical-records">
