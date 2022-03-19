@@ -13,6 +13,7 @@ class FormResepObat extends Component
     public $receipts = [ ["obat_id" => '', 'amount' => 0,'price'=>0, 'subtotal' => 0] ];
     public $obats;
     public $doctor_price = 0;
+    public $max = 0;
 
     // public function hydrate()
     // {
@@ -26,12 +27,13 @@ class FormResepObat extends Component
 
     public function mount()
     {
-        $this->obats = Obat::all();
+        $this->obats = Obat::where('stock', '>',0)->get();
     }
 
     public function setPrice($i)
     {
         $obat_id = $this->receipts[$i]['obat_id'];
+        $this->max = $this->obats->where('id',$obat_id)->first()->stock;
         $this->receipts[$i]['price'] = $this->obats->where('id', $obat_id)->first()->price??0;
     }
 

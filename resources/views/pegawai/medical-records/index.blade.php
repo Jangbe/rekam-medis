@@ -6,9 +6,11 @@
       <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
         <h6 class="text-white text-capitalize ps-3 d-flex justify-content-between" style="padding-right: 20px">
             Data Pasien
+            @if (auth()->user()->role=='pegawai')
             <a class="btn btn-sm btn-success mb-0 pr-3" href="{{ route('medical-records.create') }}">
                 <i class="fa fa-circle-plus" style="margin-right: 5px"></i> Tambah
             </a>
+            @endif
         </h6>
       </div>
     </div>

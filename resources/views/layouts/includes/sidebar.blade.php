@@ -27,7 +27,7 @@
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-pills"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Obat</span>
+                    <span class="nav-link-text ms-1">Data Obat</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -44,7 +44,7 @@
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="fa fa-user-injured"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Pasien</span>
+                    <span class="nav-link-text ms-1">Data Pasien</span>
                 </a>
             </li>
             <li class="nav-item">

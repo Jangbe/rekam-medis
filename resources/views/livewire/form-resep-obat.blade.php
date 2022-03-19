@@ -42,7 +42,7 @@
                                 <td>Rp. {{ number_format($receipt['price'], 0, ',', '.') }}</td>
                                 <td>
                                     <div class="input-group input-group-outline">
-                                        <input type="number" class="form-group @error("receipts.$i.amount") is-invalid @enderror" wire:change='setSubtotal({{ $i }})' wire:model='receipts.{{ $i }}.amount' min="0" style="max-width: 50px">
+                                        <input type="number" class="form-group @error("receipts.$i.amount") is-invalid @enderror" wire:change='setSubtotal({{ $i }})' wire:model='receipts.{{ $i }}.amount' min="0" max="{{ $max }}" style="max-width: 50px">
                                         @error("receipts.$i.amount") <div class="invalid-feedback">{{ $message }}</div> @enderror
                                     </div>
                                 </td>

@@ -76,4 +76,19 @@ class HomeController extends Controller
         }
         return response()->json($data);
     }
+
+    public function change_profile(Request $request)
+    {
+        $validate = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,id,'.$request->user()->id
+        ]);
+        $request->user()->update($validate);
+        return back()->with('success', 'Ganti profil berhasil');
+    }
+
+    public function change_password(Request $request)
+    {
+
+    }
 }
