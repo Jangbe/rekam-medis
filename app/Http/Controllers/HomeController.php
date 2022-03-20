@@ -89,6 +89,13 @@ class HomeController extends Controller
 
     public function change_password(Request $request)
     {
-
+        $validate = $request->validate([
+            'old_password' => 'required|password',
+            'password' => 'required|min:6',
+            'confirm_password' => 'required|same:password'
+        ]);
+        $validate['password'] = bcrypt($validate['password']);
+        $request->user()->update($validate);
+        return back()->with('success', 'Ganti password berhasil');
     }
 }
