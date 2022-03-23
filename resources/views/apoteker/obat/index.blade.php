@@ -53,7 +53,15 @@
                 {"data":"price", 'className':'text-center'},
                 {"data":"stock", 'className':'text-center'},
                 {"data":"action","searchable":false, "className":"w-20"},
-            ]
+            ],
+            "language":{
+                "oPaginate": {
+                    "sFirst":    ("First"),
+                    "sLast":     ("Last"),
+                    "sPrevious":     (`<a class="page-link" ><i class="tf-icon bx bx-chevrons-left"></i ></a>`),
+                    "sNext": (`<a class="page-link" ><i class="tf-icon bx bx-chevrons-right"></i ></a>`)
+                },
+            }
         });
         function create(){
             $('#title').html('Tambah Data Obat');
