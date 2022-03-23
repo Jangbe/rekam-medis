@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\MedicalRecordExport;
+use App\Models\History;
 use App\Models\MedicalRecord;
 use App\Models\Patient;
 use Illuminate\Http\Request;
@@ -90,29 +91,6 @@ class MedicalRecordController extends Controller
         return redirect()->route('medical-records.index')->with('success', 'Pendaftaran berhasil dilakukan.');
     }
 
-    public function pemeriksaan(Request $request)
-    {
-        $patient = MedicalRecord::whereDate('created_at', date('Y-m-d'))->where('diagnose', null)->first();
-        if(request()->method()=='GET'){
-            return view('dokter.pemeriksaan.index', compact('patient'));
-        }else{
-            $validate = $request->validate([
-                'anamnesa' => 'required',
-                'physical_check' => 'required',
-                'diagnose' => 'required',
-                'theraphy' => 'nullable',
-                'rujukan' => 'nullable|array'
-            ]);
-            if($request->has('rujukan')){
-                $patient->update($validate);
-                return redirect('dokter/pemeriksaan');
-            }else{
-                $request->session()->put(['med_rec'=>$validate]);
-                return redirect('dokter/resep');
-            }
-        }
-    }
-
     public function surat_sakit(Request $request,MedicalRecord $patient)
     {
         $hari = $request->hari;
@@ -135,34 +113,10 @@ class MedicalRecordController extends Controller
         return $pdf->stream('test.pdf');
     }
 
-    public function receipt(Request $request)
-    {
-        $med_rec = MedicalRecord::whereDate('created_at', date('Y-m-d'))->where('diagnose', null)->first();
-        if($request->method()=='GET'){
-            return view('dokter.pemeriksaan.resep', ['patient'=>$med_rec->patient]);
-        }else{
-            $image_64 = $request['receipt']; //your base64 encoded data
-            $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
-            $replace = substr($image_64, 0, strpos($image_64, ',')+1);
-
-            // find substring fro replace here eg: data:image/png;base64,
-            $image = str_replace($replace, '', $image_64);
-            $image = str_replace(' ', '+', $image);
-            $imageName = 'receipt/'.Str::random(10).'.'.$extension;
-            Storage::disk('public')->put($imageName, base64_decode($image));
-
-            $data = $request->session()->get('med_rec');
-            $data['receipt'] = $imageName;
-            $med_rec->update($data);
-            $request->session()->forget('med_rec');
-            return redirect('dokter/pemeriksaan')->with(['success'=>'Pemeriksaan dan pemberian obat telah dilakukan.']);
-        }
-    }
-
     public function laporan(Request $request)
     {
         if($request->ajax()){
-            $model = MedicalRecord::whereHas('patient')->with('patient');
+            $model = History::query();
             if(!is_null($request->dates)){
                 $dates = explode(' - ', $request->dates);
                 $start = date('Y-m-d', strtotime($dates[0]));
@@ -175,8 +129,8 @@ class MedicalRecordController extends Controller
                     return $patient->created_at->format('d-m-Y H:i:s');
                 })
                 ->editColumn('name', function($patient){
-                    return '<p class="text-xs font-weight-bold mb-0">'.$patient->patient->name .'</p>
-                    <p class="text-xs text-secondary mb-0">'.$patient->patient->no_rm.'</p>';
+                    return '<p class="text-xs font-weight-bold mb-0">'.$patient->name .'</p>
+                    <p class="text-xs text-secondary mb-0">'.$patient->no_rm.'</p>';
                 })
                 ->escapeColumns([''])
                 ->toJson();

@@ -1,6 +1,6 @@
 <div class="col-md-6 col-12">
     <div class="alert alert-primary">Pemeriksaan {{ $patient->patient->name }} ({{ $patient->patient->age }})</div>
-    <form class="card" action="{{ url('dokter/pemeriksaan') }}" method="POST" id="form-pemeriksaan">
+    <form class="card" action="{{ route('pemeriksaan.receipt', $patient) }}" method="POST" id="form-pemeriksaan">
         @csrf
         <div class="card-body">
             <h3 id="register" class="text-center">Pemeriksaan</h3>
@@ -15,19 +15,19 @@
                     <div class="col-4">
                         <label for="">Tinggi Badan</label>
                         <div class="input-group input-group-outline">
-                            <input type="number" value="{{ json_decode($patient->physical_check, true)['tb'] }}" name="physical_check[tb]" id="physical_check" class="form-control">
+                            <input type="number" value="{{ json_decode($patient->physical_check, true)['tb']??'' }}" name="physical_check[tb]" id="physical_check" class="form-control">
                         </div>
                     </div>
                     <div class="col-4">
                         <label for="">Berat Badan</label>
                         <div class="input-group input-group-outline">
-                            <input type="number" value="{{ json_decode($patient->physical_check, true)['bb'] }}" name="physical_check[bb]" id="physical_check" class="form-control">
+                            <input type="number" value="{{ json_decode($patient->physical_check, true)['bb']??'' }}" name="physical_check[bb]" id="physical_check" class="form-control">
                         </div>
                     </div>
                     <div class="col-4">
                         <label for="">Suhu Badan</label>
                         <div class="input-group input-group-outline">
-                            <input type="number" value="{{ json_decode($patient->physical_check, true)['suhu'] }}" name="physical_check[suhu]" id="physical_check" class="form-control">
+                            <input type="number" value="{{ json_decode($patient->physical_check, true)['suhu']??'' }}" name="physical_check[suhu]" id="physical_check" class="form-control">
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PemeriksaanController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -45,10 +46,9 @@ Route::prefix('pegawai')->middleware(['auth','role:pegawai'])->group(function ()
 
 Route::prefix('dokter')->middleware(['auth', 'role:dokter'])->group(function(){
     Route::get('medical-records', [MedicalRecordController::class, 'index']);
-    Route::get('pemeriksaan', [MedicalRecordController::class, 'pemeriksaan']);
-    Route::post('pemeriksaan', [MedicalRecordController::class, 'pemeriksaan']);
-    Route::get('resep', [MedicalRecordController::class, 'receipt']);
-    Route::post('resep', [MedicalRecordController::class, 'receipt']);
+    Route::resource('pemeriksaan', PemeriksaanController::class)->only('index','show','update');
+    Route::post('pemeriksaan/{pemeriksaan}/resep', [PemeriksaanController::class, 'receipt'])->name('pemeriksaan.receipt');
+    Route::get('pemeriksaan/{pemeriksaan}/resep', [PemeriksaanController::class, 'show_receipt'])->name('pemeriksaan.receipt');
 });
 
 Route::get('data-static-med-rec', [HomeController::class, 'data_static_med_rec']);

@@ -9,7 +9,7 @@
             // get the canvas element and its context
             var canvas = document.getElementById('sketchpad');
             canvas.width = $('.container').width()
-            canvas.height = $('.container').height()-200;
+            canvas.height = $('.container').height() - 200;
             var context = canvas.getContext('2d');
             var isIdle = true;
 
@@ -52,7 +52,7 @@
             canvas.addEventListener('mousemove', drawmove, false);
             canvas.addEventListener('mouseup', drawend, false);
 
-            $('#simpan').on('click', function(){
+            $('#simpan').on('click', function() {
                 let data = canvas.toDataURL()
                 $('#receipt').val(data)
                 $('form').submit();
@@ -60,31 +60,37 @@
         }, false); // end window.onLoad
     </script>
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
         }
-        body{
+
+        body {
             background: #525151;
             /* overflow: hidden; */
             overflow-x: hidden;
         }
-        .container{
+
+        .container {
             width: 40%;
             background: white;
             min-height: 100vh;
         }
-        .klinik{
+
+        .klinik {
             padding-top: 7px;
             font-size: 20px;
         }
-        .text-center{
+
+        .text-center {
             font-size: 14px;
             text-align: center;
         }
-        .dotted{
+
+        .dotted {
             border-bottom: 1px dotted black;
         }
+
         .btn {
             display: inline-block;
             font-weight: 700;
@@ -94,9 +100,9 @@
             vertical-align: middle;
             cursor: pointer;
             -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                    user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
             background-color: transparent;
             border: 1px solid transparent;
             padding: 0.625rem 1.5rem;
@@ -106,33 +112,40 @@
             margin-top: 5px;
             margin-bottom: 5px;
         }
+
         .btn-primary {
             color: #fff;
             background-color: #e91e63;
             border-color: #e91e63;
         }
+
         .btn-primary:hover {
             color: #000;
             background-color: #ec407a;
             border-color: #eb3573;
         }
+
         .btn-primary:focus {
-    color: #000;
-    background-color: #ec407a;
-    border-color: #eb3573;
-    box-shadow: 0 0 0 0.2rem rgba(198, 26, 84, 0.5); }
+            color: #000;
+            background-color: #ec407a;
+            border-color: #eb3573;
+            box-shadow: 0 0 0 0.2rem rgba(198, 26, 84, 0.5);
+        }
+
         @media only screen and (max-width: 1000px) {
-            .container{
+            .container {
                 width: 100%;
             }
         }
+
     </style>
     <title>Pemberian Resep Obat</title>
 </head>
 
 <body encoding='utf8'>
-    <form action="" method="post">
+    <form action="{{ route('pemeriksaan.update', $pemeriksaan) }}" method="post">
         @csrf
+        @method('put')
         <input type="hidden" name="receipt" id="receipt">
     </form>
     <center>
@@ -143,22 +156,22 @@
             <p class="text-center">TELP. 0851 0009 9370 HP. 0815 6022 530 - 0821 2972 7253</p>
             <hr style="border-width: 2px; margin-bottom: 2px; margin-top: 10px">
             <hr style="border-width: 1px; margin-bottom: 2px">
-            <canvas id='sketchpad' width='500' height='500' ></canvas>
+            <canvas id='sketchpad' width='500' height='500'></canvas>
             <table style="width: 90%">
                 <tr>
                     <td style="width: 80px">Pro.</td>
                     <td style="width: 1px">:</td>
-                    <td class="dotted">{{ $patient->name }}</td>
+                    <td class="dotted">{{ $pemeriksaan->patient->name }}</td>
                 </tr>
                 <tr>
                     <td>Umur</td>
                     <td>:</td>
-                    <td class="dotted">{{ $patient->age }}</td>
+                    <td class="dotted">{{ $pemeriksaan->patient->age }}</td>
                 </tr>
                 <tr>
                     <td>Alamat</td>
                     <td>:</td>
-                    <td class="dotted">{{ $patient->address }}</td>
+                    <td class="dotted">{{ $pemeriksaan->patient->address }}</td>
                 </tr>
             </table>
             <button class="btn btn-primary" id="simpan">Simpan</button>

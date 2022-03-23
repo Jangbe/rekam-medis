@@ -21,15 +21,15 @@ class MedicalRecordFactory extends Factory
         $tanggal = $this->faker->dateTime();
         return [
             'patient_id' => $patients[array_rand($patients)],
-            'order' => rand(),
+            'order' => rand(0, 100),
             'anamnesa' => $this->faker->sentence(),
             'physical_check' => $this->faker->sentence(),
             'diagnose' => $this->faker->sentence(),
             'theraphy' => $this->faker->sentence(),
             'receipt' => $this->faker->sentence(),
             'doctor_price' => $this->faker->numberBetween(50000, 100000),
-            'created_at' => $tanggal,
-            'updated_at' => $tanggal,
+            // 'created_at' => $tanggal,
+            // 'updated_at' => $tanggal,
         ];
     }
 }

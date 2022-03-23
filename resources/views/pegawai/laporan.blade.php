@@ -122,8 +122,8 @@
             "columns": [
                 {data:"created_at"},
                 {data:"name"},
-                {data:"patient.birth"},
-                {data:"patient.parent", className: 'align-middle text-center text-sm'},
+                {data:"birth"},
+                {data:"parent", className: 'align-middle text-center text-sm'},
             ],
         })
 
