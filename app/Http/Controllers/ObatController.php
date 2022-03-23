@@ -135,9 +135,14 @@ class ObatController extends Controller
 
     public function receipt()
     {
-        $med_rec = MedicalRecord::whereDate('created_at', date('Y-m-d'))->where('diagnose', '!=', null)->where('rujukan',null)
-                ->doesntHave('receipts')->first();
-        return view('apoteker.pemberian-obat', compact('med_rec'));
+        $med_recs = MedicalRecord::whereDate('created_at', date('Y-m-d'))->where('diagnose', '!=', null)->where('rujukan',null)
+                ->doesntHave('receipts')->get();
+        return view('apoteker.pemberian-obat.index', compact('med_recs'));
+    }
+
+    public function show_receipt(MedicalRecord $med_rec)
+    {
+        return view('apoteker.pemberian-obat.show', compact('med_rec'));
     }
 
     public function update_stock(Request $request, Obat $obat)

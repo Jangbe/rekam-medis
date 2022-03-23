@@ -30,7 +30,7 @@
                             <tr>
                                 <td>
                                     <div class="input-group input-group-outline">
-                                        <select wire:model="receipts.{{ $i }}.obat_id" id="" class="select2-obat @error("receipts.$i.obat_id") is-invalid @enderror" data-i="{{$i}}" wire:change='setPrice({{$i}})'>
+                                        <select wire:model="receipts.{{ $i }}.obat_id" id="" class="form-control select2-obat @error("receipts.$i.obat_id") is-invalid @enderror" data-i="{{$i}}" wire:change='setPrice({{$i}})'>
                                             <option value="">--Pilih Obat--</option>
                                             @foreach ($obats->sortBy('name') as $obat)
                                                 <option value="{{ $obat->id }}">{{ $obat->name }}</option>
@@ -42,7 +42,7 @@
                                 <td>Rp. {{ number_format($receipt['price'], 0, ',', '.') }}</td>
                                 <td>
                                     <div class="input-group input-group-outline">
-                                        <input type="number" class="form-group @error("receipts.$i.amount") is-invalid @enderror" wire:change='setSubtotal({{ $i }})' wire:model='receipts.{{ $i }}.amount' min="0" max="{{ $max }}" style="max-width: 50px">
+                                        <input type="number" class="form-control @error("receipts.$i.amount") is-invalid @enderror" wire:change='setSubtotal({{ $i }})' wire:model='receipts.{{ $i }}.amount' min="0" max="{{ $max }}" style="min-width: 60px">
                                         @error("receipts.$i.amount") <div class="invalid-feedback">{{ $message }}</div> @enderror
                                     </div>
                                 </td>

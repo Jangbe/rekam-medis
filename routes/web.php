@@ -32,6 +32,7 @@ Route::prefix('apoteker')->middleware(['auth','role:apoteker'])->group(function 
     Route::resource('obat', ObatController::class);
     Route::put('update-stok-obat/{obat}', [ObatController::class, 'update_stock']);
     Route::get('pemberian-obat', [ObatController::class, 'receipt']);
+    Route::get('pemberian-obat/{med_rec}', [ObatController::class, 'show_receipt']);
 });
 
 Route::prefix('pegawai')->middleware(['auth','role:pegawai'])->group(function () {

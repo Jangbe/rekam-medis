@@ -30,7 +30,7 @@
                     <div>Data Obat</div>
                 </a>
             </li>
-            <li class="menu-item {{ request()->is('apoteker/pemberian-obat') ? 'active' : '' }}">
+            <li class="menu-item {{ request()->is('apoteker/pemberian-obat*') ? 'active' : '' }}">
                 <a class="menu-link" href="/apoteker/pemberian-obat">
                     <i class="menu-icon fa fa-hospital-user"></i>
                     <div>Pemberian Obat</div>
