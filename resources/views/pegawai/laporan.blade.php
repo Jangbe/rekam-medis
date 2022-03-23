@@ -9,63 +9,34 @@
     <div class="row">
         <div class="col-12">
             @if ($errors->any())
-            <div class="alert alert-warning text-white mb-5">Ada field yang belum diisi</div>
+            <div class="alert alert-warning mb-5">Ada field yang belum diisi</div>
             @endif
-            {{-- <div class="row d-flex justify-content-center">
-                <div class="col-md-5 col-8">
-                    <div class="card my-3">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-5 my-auto">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="showAll">
-                                        <label class="form-check-label mb-0 ms-2" for="showAll">Lihat Semua</label>
-                                    </div>
-                                </div>
-                                <div class="col-7">
-                                    <div class="form-group">
-                                        <div class="input-group input-group-outline">
-                                            <input type="text" data-toggle="daterangepicker" name="dates" class="form-control filter">
-                                        </div>
-                                    </div>
+            <div class="card my-4">
+                <div class="card-header">
+                    <form action="{{ route('med-rec.export') }}" method="post" id="form" target="_blank" class="d-flex justify-content-between">
+                        @csrf
+                        @method('put')
+                        <h6 class="card-title my-auto d-inline" style="padding-right: 20px"> Laporan Data Rekam Medis </h6>
+                        <div class="w-50 d-flex">
+                            <div class="form-check w-50 my-auto">
+                                <input class="form-check-input" type="checkbox" name="printAll" id="showAll">
+                                <label class="form-check-label mb-0 ms-2" for="showAll">Lihat Semua</label>
+                            </div>
+                            <div class="form-group w-50">
+                                <div class="input-group input-group-outline">
+                                    <input type="text" data-toggle="daterangepicker" name="dates" class="form-control filter">
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="my-auto">
+                            <button class="btn btn-success mb-0 pr-3" name="pdf" id="export-pdf"><i class="fa fa-file-pdf"></i> Print
+                                PDF</button>
+                            <button class="btn btn-success mb-0 pr-3" name="excel" id="export-excel"><i class="fa fa-file-excel"></i> Print
+                                Excel</button>
+                        </div>
+                    </form>
                 </div>
-            </div> --}}
-            <div class="card my-4">
-                <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-                    <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                        <form action="{{ route('med-rec.export') }}" method="post" id="form" target="_blank">
-                            @csrf
-                            @method('put')
-                            <h6 class="text-white text-capitalize ps-3 d-flex justify-content-between"
-                                style="padding-right: 20px">
-                                <div class="my-auto">
-                                    Laporan Data Rekam Medis
-                                </div>
-                                <div class="w-50 d-flex">
-                                    <div class="form-check w-50 my-auto">
-                                        <input class="form-check-input" type="checkbox" name="printAll" id="showAll">
-                                        <label class="form-check-label text-white mb-0 ms-2" for="showAll">Lihat Semua</label>
-                                    </div>
-                                    <div class="form-group w-50">
-                                        <div class="input-group input-group-outline">
-                                            <input type="text" data-toggle="daterangepicker" name="dates" class="form-control text-white filter">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="my-auto">
-                                    <button class="btn btn-sm btn-success mb-0 pr-3" name="pdf" id="export-pdf"><i class="fa fa-file-pdf"></i> Print
-                                        PDF</button>
-                                    <button class="btn btn-sm btn-success mb-0 pr-3" name="excel" id="export-excel"><i class="fa fa-file-excel"></i> Print
-                                        Excel</button>
-                                </div>
-                            </h6>
-                        </form>
-                    </div>
-                </div>
+                <hr class="my-auto">
                 <div class="card-body pb-2">
                     <div class="table-responsive p-0">
                         <table class="table align-items-center mb-0" id="table-laporan">

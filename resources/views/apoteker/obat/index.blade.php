@@ -2,16 +2,15 @@
 
 @section('content')
 <div class="card my-4">
-    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-      <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-        <h6 class="text-white text-capitalize ps-3 d-flex justify-content-between" style="padding-right: 20px">
+    <div class="card-header d-flex justify-content-between">
+        <h6 class="card-title my-auto" style="padding-right: 20px">
             Data Obat
-            <a class="btn btn-sm btn-success mb-0 pr-3" onclick="create()">
-                <i class="fa fa-circle-plus" style="margin-right: 5px"></i> Tambah
-            </a>
         </h6>
-      </div>
+        <a class="btn btn-success text-white mb-0 pr-3" onclick="create()">
+            <i class="fa fa-circle-plus" style="margin-right: 5px"></i> Tambah
+        </a>
     </div>
+    <hr class="my-auto">
     <div class="card-body pb-2">
       <div class="table-responsive p-0">
         <table class="table align-items-center mb-0" id="table-obat">
@@ -48,8 +47,6 @@
             "columns": [
                 {"data":"name", 'className':'text-center'},
                 {"data":"unit", 'className':'text-center'},
-                // {"data":"type", 'className':'text-center'},
-                // {"data":"satuan", 'className':'text-center'},
                 {"data":"price", 'className':'text-center'},
                 {"data":"stock", 'className':'text-center'},
                 {"data":"action","searchable":false, "className":"w-20"},

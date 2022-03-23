@@ -43,6 +43,6 @@
     </div>
 </div>
 @else
-<div class="alert alert-warning text-white">Tidak ada data pemberian obat</div>
+<div class="alert alert-warning">Tidak ada data pemberian obat</div>
 @endisset
 @endsection

@@ -5,7 +5,7 @@
 <div class="row">
     @include('dokter.pemeriksaan._form')
     <div class="col-md-6 col-12">
-        <div class="alert alert-primary text-white">Riwayat Pemeriksaan</div>
+        <div class="alert alert-primary">Riwayat Pemeriksaan</div>
         <div class="card">
             <div class="card-body">
                 <div class="table-responsive">
@@ -31,6 +31,6 @@
     </div>
 </div>
 @else
-<div class="alert alert-warning text-white">Belum Ada Pasien</div>
+<div class="alert alert-warning">Belum Ada Pasien</div>
 @endif
 @endsection

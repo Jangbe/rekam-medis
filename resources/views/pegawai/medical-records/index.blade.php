@@ -2,18 +2,15 @@
 
 @section('content')
 <div class="card my-4">
-    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-      <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-        <h6 class="text-white text-capitalize ps-3 d-flex justify-content-between" style="padding-right: 20px">
-            Data Pasien
-            @if (auth()->user()->role=='pegawai')
-            <a class="btn btn-sm btn-success mb-0 pr-3" href="{{ route('medical-records.create') }}">
-                <i class="fa fa-circle-plus" style="margin-right: 5px"></i> Tambah
-            </a>
-            @endif
-        </h6>
-      </div>
+    <div class="card-header d-flex justify-content-between">
+        <h3 class="card-title my-auto"> Data Pasien </h3>
+        @if (auth()->user()->role=='pegawai')
+        <a class="btn btn-success mb-0 pr-3" href="{{ route('medical-records.create') }}">
+            <i class="fa fa-circle-plus" style="margin-right: 5px"></i> Tambah
+        </a>
+        @endif
     </div>
+    <hr class="my-0">
     <div class="card-body pb-2">
       <div class="table-responsive p-0">
         <table class="table align-items-center mb-0 table-striped" id="table-patient">

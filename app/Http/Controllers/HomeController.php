@@ -37,25 +37,20 @@ class HomeController extends Controller
     }
 
     public function data_static_med_rec(){
-        $med_recs = MedicalRecord::count();
-        $week = ['Ming', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
-
         $now = new Carbon();
-        $end_week = $now->format('Y-m-d');
-        $start_week = $now->subDays(6)->format('Y-m-d');
+        $end_week = $now->addDay()->format('Y-m-d');
+        $start_week = $now->subDays(8)->format('Y-m-d');
 
         $pendaftaran = MedicalRecord::select(
             DB::raw("(count(*)) as total"),
             DB::raw("(DATE_FORMAT(created_at, '%d-%m-%Y')) as my_date"),
-            DB::raw("(DATE_FORMAT(created_at, '%w')) as week")
-        )->whereBetween('created_at', [$start_week, $end_week])->groupBy(DB::raw("DATE_FORMAT(created_at, '%d-%m-%Y')"), DB::raw("DATE_FORMAT(created_at, '%w')"))->get();
+        )->whereBetween('created_at', [$start_week, $end_week])->groupBy(DB::raw("DATE_FORMAT(created_at, '%d-%m-%Y')"))->get();
 
         $data['data'] = [0,0,0,0,0,0,0];
         $periods = CarbonPeriod::create(Carbon::now()->subDays(6), Carbon::now());
         foreach ($periods as  $p) {
-            $w = $p->format('w');
-            $data['labels'][] = $week[$w];
-            $data['data'][$w] = $pendaftaran->where('week', $w)->first()->total??0;
+            $data['labels'][] = $p->isoFormat('ddd');
+            $data['data'][$p->format('w')] = $pendaftaran->where('my_date', $p->format('d-m-Y'))->first()->total??0;
         }
         return response()->json($data);
     }

@@ -36,6 +36,7 @@
     <!-- Page CSS -->
     <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/dataTables.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/select2-bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/datepicker.min.css') }}">
@@ -117,7 +118,7 @@
     <script src="{{ asset('js/moment.min.js') }}"></script>
     <script src="{{ asset('js/datepicker.min.js') }}"></script>
     <script src="{{ asset('js/daterangepicker.min.js') }}"></script>
-    <script src="{{ asset('js/admin.js') }}"></script>
+    <script src="{{ asset('js/admin-sneak.js') }}"></script>
     @stack('js')
     <script>
         $('[data-toggle="datepicker"]').datepicker({

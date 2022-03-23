@@ -1,5 +1,5 @@
 <div class="col-md-6 col-12">
-    <div class="alert alert-primary text-white">Pemeriksaan {{ $patient->patient->name }} ({{ $patient->patient->age }})</div>
+    <div class="alert alert-primary">Pemeriksaan {{ $patient->patient->name }} ({{ $patient->patient->age }})</div>
     <form class="card" action="{{ url('dokter/pemeriksaan') }}" method="POST" id="form-pemeriksaan">
         @csrf
         <div class="card-body">
