@@ -9,7 +9,7 @@
         <div class="row gx-4 mb-2">
             <div class="col-auto">
                 <div class="avatar avatar-xl position-relative">
-                    <img src="./admin/assets/img/bruce-mars.jpg" alt="profile_image"
+                    <img src="./admin/assets/img/logo.png" alt="profile_image"
                         class="w-100 border-radius-lg shadow-sm">
                 </div>
             </div>
@@ -64,8 +64,7 @@
                                 <div class="form-group">
                                     <div class="input-group input-group-outline is-filled">
                                         <label for="" class="form-label">Nama</label>
-                                        <input type="text" name="name" value="{{ auth()->user()->name }}"
-                                            class="form-control">
+                                        <input type="text" name="name" value="{{ auth()->user()->name }}" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group mt-3">
@@ -74,6 +73,9 @@
                                         <input type="email" name="email" value="{{ auth()->user()->email }}"
                                             class="form-control">
                                     </div>
+                                    @error('email')
+                                        <span class="text-danger text-sm">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <button class="btn btn-primary mt-3">Ganti</button>
                             </form>
@@ -94,17 +96,23 @@
                                         <label for="" class="form-label">Password Lama</label>
                                         <input type="password" name="old_password" class="form-control">
                                     </div>
+                                    @error('old_password')
+                                        <span class="text-danger text-sm">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group mt-3">
                                     <div class="input-group input-group-outline">
                                         <label for="" class="form-label">Password Baru</label>
                                         <input type="password" name="password" class="form-control">
                                     </div>
+                                    @error('password')
+                                        <span class="text-danger text-sm">{{ $message }}</span>
+                                    @enderror
                                 </div>
                                 <div class="form-group mt-3">
                                     <div class="input-group input-group-outline">
-                                        <label for="" class="form-label">Password Baru</label>
-                                        <input type="password" name="confirm_password" class="form-control">
+                                        <label for="" class="form-label">Konfirmasi Password</label>
+                                        <input type="password" name="password_confirmation" class="form-control">
                                     </div>
                                 </div>
                                 <button class="btn btn-primary mt-3">Ganti</button>

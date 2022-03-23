@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\MedicalRecord;
 use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\CarbonPeriod;
 use Carbon\Carbon;
-use DB;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
 {
@@ -18,7 +21,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('test_curl');
     }
 
     /**
@@ -34,6 +37,7 @@ class HomeController extends Controller
     }
 
     public function data_static_med_rec(){
+        $med_recs = MedicalRecord::count();
         $week = ['Ming', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
 
         $now = new Carbon();
@@ -81,7 +85,7 @@ class HomeController extends Controller
     {
         $validate = $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email,id,'.$request->user()->id
+            'email' => 'required|email|unique:users,email,'.$request->user()->id.',id'
         ]);
         $request->user()->update($validate);
         return back()->with('success', 'Ganti profil berhasil');
@@ -90,12 +94,16 @@ class HomeController extends Controller
     public function change_password(Request $request)
     {
         $validate = $request->validate([
-            'old_password' => 'required|password',
-            'password' => 'required|min:6',
-            'confirm_password' => 'required|same:password'
+            'old_password' => 'required',
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required'
         ]);
+        $user = User::find($request->user()->id);
+        if(!Hash::check($validate['old_password'],$user->password)){
+            return back()->withErrors(['old_password'=>'Password lama salah']);
+        }
         $validate['password'] = bcrypt($validate['password']);
-        $request->user()->update($validate);
+        $user->update($validate);
         return back()->with('success', 'Ganti password berhasil');
     }
 }

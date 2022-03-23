@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MedicalRecordController;
 use App\Http\Controllers\ObatController;
 use App\Http\Controllers\PatientController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,12 +17,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-// Route::view('/', 'welcome');
 Route::redirect('/', 'login');
-
 Auth::routes(['register'=>false]);
-Route::view('profile', 'auth.profile')->middleware('auth');
+
+Route::middleware('auth')->group(function(){
+    Route::view('profile', 'auth.profile');
+    Route::put('profile/change-profile', [HomeController::class, 'change_profile']);
+    Route::put('profile/change-password', [HomeController::class, 'change_password']);
+});
+
 Route::prefix('apoteker')->middleware(['auth','role:apoteker'])->group(function () {
     Route::get('obat/ajax', [ObatController::class, 'ajax']);
     Route::resource('obat', ObatController::class);
@@ -30,10 +35,11 @@ Route::prefix('apoteker')->middleware(['auth','role:apoteker'])->group(function 
 
 Route::prefix('pegawai')->middleware(['auth','role:pegawai'])->group(function () {
     Route::resource('patients', PatientController::class);
+    Route::get('patients/{patient:no_rm}/edit', [PatientController::class, 'edit'])->name('patients.edit');
     Route::post('medical-records/{patient}/surat-sakit', [MedicalRecordController::class, 'surat_sakit'])->name('med-rec.surat-sakit');
     Route::get('medical-records/{patient}/surat-rujukan', [MedicalRecordController::class, 'surat_rujukan'])->name('med-rec.surat-rujukan');
     Route::get('medical-records/laporan', [MedicalRecordController::class, 'laporan'])->name('med-rec.laporan');
-    Route::put('medical-records/laporan/{type}', [MedicalRecordController::class, 'export'])->name('med-rec.export');
+    Route::put('medical-records/laporan', [MedicalRecordController::class, 'export'])->name('med-rec.export');
     Route::resource('medical-records', MedicalRecordController::class)->only('index','create','store');
 });
 
@@ -45,6 +51,6 @@ Route::prefix('dokter')->middleware(['auth', 'role:dokter'])->group(function(){
     Route::post('resep', [MedicalRecordController::class, 'receipt']);
 });
 
-Route::get('data-static-med-rec', [App\Http\Controllers\HomeController::class, 'data_static_med_rec']);
-Route::get('data-static-patient', [App\Http\Controllers\HomeController::class, 'data_static_patient']);
-Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('data-static-med-rec', [HomeController::class, 'data_static_med_rec']);
+Route::get('data-static-patient', [HomeController::class, 'data_static_patient']);
+Route::get('/dashboard', [HomeController::class, 'index'])->name('home');

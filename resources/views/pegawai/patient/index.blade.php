@@ -54,5 +54,7 @@
 @endsection
 
 @push('js')
-    <script>$('#table-patient').DataTable({sort:false})</script>
+    <script>
+      var table = $('#table-patient').DataTable({sort:false})
+    </script>
 @endpush

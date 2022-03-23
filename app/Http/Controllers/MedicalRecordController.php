@@ -7,10 +7,10 @@ use App\Models\MedicalRecord;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
-use Rawilk\Printing\Facades\Printing;
 use Yajra\DataTables\Facades\DataTables;
 
 class MedicalRecordController extends Controller
@@ -148,7 +148,7 @@ class MedicalRecordController extends Controller
             // find substring fro replace here eg: data:image/png;base64,
             $image = str_replace($replace, '', $image_64);
             $image = str_replace(' ', '+', $image);
-            $imageName = 'receipt/'.\Str::random(10).'.'.$extension;
+            $imageName = 'receipt/'.Str::random(10).'.'.$extension;
             Storage::disk('public')->put($imageName, base64_decode($image));
 
             $data = $request->session()->get('med_rec');
@@ -184,25 +184,25 @@ class MedicalRecordController extends Controller
         return view('pegawai.laporan');
     }
 
-    public function export(Request $request, $type)
+    public function export(Request $request)
     {
         if($request->has('printAll')){
             $name = 'Laporan Rekam Medis Semua Tanggal';
             $model = MedicalRecord::whereHas('patient')->get();
         }else{
             $request->validate([
-                'dateExport' => 'required',
+                'dates' => 'required',
             ]);
-            $dates = explode(' - ', $request->dateExport);
+            $dates = explode(' - ', $request->dates);
             $start = date('Y-m-d', strtotime($dates[0]));
             $end = date('Y-m-d', strtotime($dates[1]));
             $name = 'Laporan Rekam Medis dari tanggal '.$start.' sampai '.$end;
             $model = MedicalRecord::whereHas('patient')->whereBetween('created_at', [$start,$end])->get();
         }
-        if($type=='pdf'){
+        if($request->has('pdf')){
             $pdf = PDF::loadView('pdf.medical-record', compact('model', 'name'));
             return $pdf->stream($name.'.pdf');
-        }else if($type=='excel'){
+        }else if($request->has('excel')){
             return Excel::download(new MedicalRecordExport($model,$name), $name.'.xlsx');
         }
     }

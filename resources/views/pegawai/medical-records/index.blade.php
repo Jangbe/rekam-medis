@@ -90,8 +90,8 @@
 @endsection
 
 @push('js')
-    <script>$('#table-patient').DataTable({sort:false})</script>
     <script>
+        var table = $('#table-patient').DataTable({sort:false})
         $('.surat_sakit').on('click', function(e){
             let data = $(this).data('detail')
             e.preventDefault()
