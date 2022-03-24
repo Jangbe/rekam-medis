@@ -55,3 +55,6 @@ Route::prefix('dokter')->middleware(['auth', 'role:dokter'])->group(function(){
 Route::get('data-static-med-rec', [HomeController::class, 'data_static_med_rec']);
 Route::get('data-static-patient', [HomeController::class, 'data_static_patient']);
 Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
+Route::get('/laporan', [HomeController::class, 'laporan'])->name('med-rec.laporan');
+Route::get('/laporan/{medical_record}', [HomeController::class, 'show']);
+Route::put('/laporan', [HomeController::class, 'export'])->name('med-rec.export');

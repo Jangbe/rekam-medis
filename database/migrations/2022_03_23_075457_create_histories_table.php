@@ -16,6 +16,7 @@ return new class extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('med_rec_id');
             $table->string('name');
             $table->string('no_rm');
             $table->string('birth');
@@ -24,7 +25,8 @@ return new class extends Migration
         });
         DB::unprepared("CREATE TRIGGER history_medrecs AFTER INSERT ON `medical_records` FOR EACH ROW
             BEGIN
-                INSERT INTO `histories` (`name`, `no_rm`, `birth`, `parent`, `created_at`, `updated_at`) VALUES (
+                INSERT INTO `histories` (`med_rec_id`, `name` ,`no_rm`, `birth`, `parent`, `created_at`, `updated_at`) VALUES (
+                    NEW.id,
                     (SELECT (name) FROM patient where id=NEW.patient_id),
                     (SELECT (no_rm) FROM patient where id=NEW.patient_id),
                     (SELECT (birth) FROM patient where id=NEW.patient_id),

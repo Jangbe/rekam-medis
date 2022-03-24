@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MedicalRecordExport;
+use App\Models\History;
 use App\Models\MedicalRecord;
 use App\Models\Patient;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Carbon\CarbonPeriod;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class HomeController extends Controller
 {
@@ -100,5 +104,69 @@ class HomeController extends Controller
         $validate['password'] = bcrypt($validate['password']);
         $user->update($validate);
         return back()->with('success', 'Ganti password berhasil');
+    }
+
+    public function laporan(Request $request)
+    {
+        if($request->ajax()){
+            $model = History::query();
+            if(!is_null($request->dates)){
+                $dates = explode(' / ', $request->dates);
+                $start = date('Y-m-d', strtotime($dates[0]));
+                $end = date('Y-m-d', strtotime($dates[1])).' 23:59:59';
+                $model = $model->whereBetween('created_at', [$start,$end]);
+            }
+            $dt = DataTables::collection($model->get());
+            return $dt
+                ->editColumn('created_at', function($patient){
+                    return $patient->created_at->format('d-m-Y H:i:s');
+                })
+                ->editColumn('name', function($patient){
+                    return '<p class="text-xs font-weight-bold mb-0">'.$patient->name .'</p>
+                    <p class="text-xs text-secondary mb-0">'.$patient->no_rm.'</p>';
+                })
+                ->addColumn('action', function($patient){
+                    return '<a href="/laporan/'.$patient->id.'" class="btn btn-primary">Detail</a>';
+                })
+                ->escapeColumns([''])
+                ->toJson();
+        }
+        return view('laporan.index');
+    }
+
+    public function show(MedicalRecord $medical_record)
+    {
+        return view('laporan.'.auth()->user()->role, compact('medical_record'));
+    }
+
+    public function export(Request $request)
+    {
+        if($request->has('printAll')){
+            $name = 'Laporan Rekam Medis Semua Tanggal';
+            $model = MedicalRecord::whereHas('patient')->get();
+        }else{
+            $request->validate([
+                'dates' => 'required',
+            ]);
+            $dates = explode(' / ', $request->dates);
+            $start = date('Y-m-d', strtotime($dates[0]));
+            $end = date('Y-m-d', strtotime($dates[1]));
+            if($start==$end){
+                $name = 'Laporan Rekam Medis Hari Ini';
+            }elseif($start==date('Y-m-d',strtotime($end)-(60*60*24*6))){
+                $name = 'Laporan Rekam Medis Minggu Ini';
+            }elseif($start==date('Y-m-d',strtotime($end)-(60*60*24*29))){
+                $name = 'Laporan Rekam Medis Bulan Ini';
+            }else{
+                $name = 'Laporan Rekam Medis dari tanggal '.$start.' sampai '.$end;
+            }
+            $model = MedicalRecord::whereHas('patient')->whereBetween('created_at', [$start,$end.' 23:59:59'])->get();
+        }
+        if($request->has('pdf')){
+            $pdf = Pdf::loadView('pdf.medical-record', compact('model', 'name'));
+            return $pdf->stream($name.'.pdf');
+        }else if($request->has('excel')){
+            return Excel::download(new MedicalRecordExport($model,$name), $name.'.xlsx');
+        }
     }
 }

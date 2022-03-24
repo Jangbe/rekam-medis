@@ -18,7 +18,7 @@
                         </thead>
                         @foreach ($patient->patient->med_recs as $med_rec)
                             <tr>
-                                <td>{{ $med_rec->created_at }}</td>
+                                <td>{{ $med_rec->created_at->format('y-m-d H:i') }}</td>
                                 <td>{{ $med_rec->anamnesa }}</td>
                                 <td>{{ $med_rec->diagnose }}</td>
                                 <td>{{ $med_rec->theraphy }}</td>

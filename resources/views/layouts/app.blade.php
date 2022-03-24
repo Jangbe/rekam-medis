@@ -138,6 +138,12 @@
         var start = moment().subtract(29, 'days'); // Subtract 29 days from today
         var end = moment(); // Today
         $('[data-toggle="daterangepicker"]').daterangepicker({
+            // startDate: start, // after open picker you'll see this dates as picked
+            // endDate: end,
+            locale: {
+                format: 'DD-MM-YYYY',
+                separator: ' / '
+            },
             ranges: {
                 'Hari Ini': [moment(), moment()],
                 '1 Minggu Terakhir': [moment().subtract(6, 'days'), moment()],

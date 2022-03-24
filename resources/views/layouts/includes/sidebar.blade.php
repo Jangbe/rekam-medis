@@ -49,12 +49,12 @@
                     <div>Pendaftaran</div>
                 </a>
             </li>
-            <li class="menu-item {{ request()->routeIs('med-rec.laporan') ? 'active' : '' }}">
+            {{-- <li class="menu-item {{ request()->routeIs('med-rec.laporan') ? 'active' : '' }}">
                 <a class="menu-link" href="/pegawai/medical-records/laporan">
                     <i class="menu-icon fa fa-book"></i>
                     <div>Laporan</div>
                 </a>
-            </li>
+            </li> --}}
         @elseif(auth()->user()->role == 'dokter')
             <li class="menu-item {{ request()->is('dokter/medical-records*') ? 'active' : '' }}">
                 <a class="menu-link" href="/dokter/medical-records">
@@ -69,6 +69,12 @@
                 </a>
             </li>
         @endif
+        <li class="menu-item {{ request()->routeIs('med-rec.laporan') ? 'active' : '' }}">
+            <a class="menu-link" href="/laporan">
+                <i class="menu-icon fa fa-book"></i>
+                <div>Laporan</div>
+            </a>
+        </li>
         <!-- Misc -->
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Account Pages</span></li>
         <li class="menu-item {{ request()->is('profile')?'active':'' }}">
