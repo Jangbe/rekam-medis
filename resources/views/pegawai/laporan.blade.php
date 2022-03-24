@@ -125,6 +125,14 @@
                 {data:"birth"},
                 {data:"parent", className: 'align-middle text-center text-sm'},
             ],
+            "language":{
+                "oPaginate": {
+                    "sFirst":    ("First"),
+                    "sLast":     ("Last"),
+                    "sPrevious":     (`<i class="tf-icon bx bx-chevrons-left"></i>`),
+                    "sNext": (`<i class="tf-icon bx bx-chevrons-right"></i>`)
+                },
+            }
         })
 
         $('#showAll').on('click', function(){

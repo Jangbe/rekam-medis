@@ -10,30 +10,26 @@ use Livewire\Component;
 class FormResepObat extends Component
 {
     protected $listeners = ['setPrice'];
-    public $receipts = [ ["obat_id" => '', 'amount' => 0,'price'=>0, 'subtotal' => 0] ];
+    public $med_rec;
+    public $receipts = [ ["obat_id" => '', 'amount' => 0,'price'=>0, 'subtotal' => 0, 'max' => 0] ];
     public $obats;
     public $doctor_price = 0;
-    public $max = 0;
-
-    // public function hydrate()
-    // {
-    //     $this->emit('select2-obat');
-    // }
 
     public function addObat()
     {
-        $this->receipts[] = [ "obat_id" => '', 'amount' => 0,'price'=>0, 'subtotal' => 0 ];
+        $this->receipts[] = [ "obat_id" => '', 'amount' => 0,'price'=>0, 'subtotal' => 0 , 'max' => 0];
     }
 
-    public function mount()
+    public function mount($med_rec)
     {
+        $this->med_rec = $med_rec;
         $this->obats = Obat::where('stock', '>',0)->get();
     }
 
     public function setPrice($i)
     {
         $obat_id = $this->receipts[$i]['obat_id'];
-        $this->max = $this->obats->where('id',$obat_id)->first()->stock;
+        $this->receipts[$i]['max'] = $this->obats->where('id',$obat_id)->first()->stock;
         $this->receipts[$i]['price'] = $this->obats->where('id', $obat_id)->first()->price??0;
     }
 
@@ -44,21 +40,24 @@ class FormResepObat extends Component
 
     public function save()
     {
-        $med_rec = MedicalRecord::whereDate('created_at', date('Y-m-d'))
-                ->doesntHave('receipts')->first();
-        $med_rec->update(['doctor_price'=>$this->doctor_price]);
-        $validate = $this->validate([
+        $validasi = [
             'receipts' => 'required|array',
             'receipts.*.obat_id' => 'required',
-            'receipts.*.amount' => 'required|numeric|min:1',
             'doctor_price' => 'required'
-        ],[],[
-            'receipts.*.obat_id' => 'Obat'
+        ];
+        foreach($this->receipts as $i => $receipt){
+            $validasi['receipts.'.$i.'.amount'] = 'required|numeric|min:1|max:'.$receipt['max'];
+        }
+
+        $this->med_rec->update(['doctor_price'=>$this->doctor_price]);
+        $this->validate($validasi,[],[
+            'receipts.*.obat_id' => 'Obat',
+            'receipts.*.amount' => 'jumlah'
         ]);
         foreach($this->receipts as $receipt){
             $obat = Obat::find($receipt['obat_id']);
             $obat->update(['stock' => $obat->stock - $receipt['amount']]);
-            Receipt::create(array_merge($receipt, ['medical_record_id'=>$med_rec->id]));
+            Receipt::create(array_merge($receipt, ['medical_record_id'=>$this->med_rec->id]));
         }
         return redirect('apoteker/pemberian-obat')->with('success', 'Pemberian obat berhasil');
     }

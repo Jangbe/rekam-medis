@@ -34,9 +34,8 @@
 
     <link rel="stylesheet" href="{{ url('admin') }}/assets/vendor/libs/apex-charts/apex-charts.css" />
     <!-- Page CSS -->
+    <link rel="stylesheet" href="{{ asset('admin/libs/datatables/datatables.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sweetalert2.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/dataTables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/select2.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/select2-bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/datepicker.min.css') }}">
@@ -112,9 +111,9 @@
     <!-- Page JS -->
     <script src="{{ url('admin') }}/assets/js/dashboards-analytics.js"></script>
 
+    <script src="{{ asset('admin/libs/datatables/datatables.js') }}"></script>
     <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
-    <script src="{{ asset('js/dataTables.min.js') }}"></script>
     <script src="{{ asset('js/moment.min.js') }}"></script>
     <script src="{{ asset('js/datepicker.min.js') }}"></script>
     <script src="{{ asset('js/daterangepicker.min.js') }}"></script>

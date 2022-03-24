@@ -10,7 +10,7 @@
         }
     </style>
     <div class="card">
-        <div class="card-header d-flex justify-content-between pb-0">
+        <div class="card-header d-flex justify-content-between pb-2">
             <div class="card-title">Input Resep Obat</div>
             <button class="btn btn-sm btn-info" type="button" wire:click="addObat"><i class="fa fa-plus"></i></button>
         </div>
@@ -22,14 +22,14 @@
                             <th>Nama Obat</th>
                             <th>Harga</th>
                             <th style="width: 50px">Beli</th>
-                            <th>Subtotal</th>
+                            <th style="width: 130px">Subtotal</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($receipts as $i => $receipt)
                             <tr>
                                 <td>
-                                    <div class="input-group input-group-outline">
+                                    <div class="form-group">
                                         <select wire:model="receipts.{{ $i }}.obat_id" id="" class="form-control select2-obat @error("receipts.$i.obat_id") is-invalid @enderror" data-i="{{$i}}" wire:change='setPrice({{$i}})'>
                                             <option value="">--Pilih Obat--</option>
                                             @foreach ($obats->sortBy('name') as $obat)
@@ -41,8 +41,8 @@
                                 </td>
                                 <td>Rp. {{ number_format($receipt['price'], 0, ',', '.') }}</td>
                                 <td>
-                                    <div class="input-group input-group-outline">
-                                        <input type="number" class="form-control @error("receipts.$i.amount") is-invalid @enderror" wire:change='setSubtotal({{ $i }})' wire:model='receipts.{{ $i }}.amount' min="0" max="{{ $max }}" style="min-width: 60px">
+                                    <div class="form-group">
+                                        <input type="number" class="form-control @error("receipts.$i.amount") is-invalid @enderror" wire:change='setSubtotal({{ $i }})' wire:model='receipts.{{ $i }}.amount' min="0" max="{{ $receipts[$i]['max'] }}" style="min-width: 60px">
                                         @error("receipts.$i.amount") <div class="invalid-feedback">{{ $message }}</div> @enderror
                                     </div>
                                 </td>
@@ -60,7 +60,6 @@
                         <tr>
                             <td colspan="3" style="text-align: right">Total</td>
                             <td>
-
                                 Rp. {{ number_format(collect($receipts)->sum('subtotal')+intval($doctor_price) ,0,',','.') }}
                             </td>
                         </tr>
@@ -68,7 +67,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end mt-2">
                 <button class="btn btn-primary" wire:click='save'>Simpan</button>
             </div>
         </div>
@@ -88,7 +87,6 @@
             // window.livewire.on('select2-obat',()=>{
             //     initSelectObat();
             // });
-
         });
     </script>
 </div>

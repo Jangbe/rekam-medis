@@ -169,8 +169,8 @@
                     <td class="dotted">{{ $pemeriksaan->patient->age }}</td>
                 </tr>
                 <tr>
-                    <td>Alamat</td>
-                    <td>:</td>
+                    <td style="vertical-align: top">Alamat</td>
+                    <td style="vertical-align: top">:</td>
                     <td class="dotted">{{ $pemeriksaan->patient->address }}</td>
                 </tr>
             </table>

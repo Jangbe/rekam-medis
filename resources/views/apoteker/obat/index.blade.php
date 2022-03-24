@@ -13,7 +13,7 @@
     <hr class="my-auto">
     <div class="card-body pb-2">
       <div class="table-responsive p-0">
-        <table class="table align-items-center mb-0" id="table-obat">
+        <table class="table align-items-center table-striped mb-0" id="table-obat">
           <thead>
             <tr>
               <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
@@ -49,14 +49,14 @@
                 {"data":"unit", 'className':'text-center'},
                 {"data":"price", 'className':'text-center'},
                 {"data":"stock", 'className':'text-center'},
-                {"data":"action","searchable":false, "className":"w-20"},
+                {"data":"action","searchable":false, "className":"w-20 text-center"},
             ],
             "language":{
                 "oPaginate": {
                     "sFirst":    ("First"),
                     "sLast":     ("Last"),
-                    "sPrevious":     (`<a class="page-link" ><i class="tf-icon bx bx-chevrons-left"></i ></a>`),
-                    "sNext": (`<a class="page-link" ><i class="tf-icon bx bx-chevrons-right"></i ></a>`)
+                    "sPrevious":     (`<i class="tf-icon bx bx-chevrons-left"></i>`),
+                    "sNext": (`<i class="tf-icon bx bx-chevrons-right"></i>`)
                 },
             }
         });
