@@ -134,9 +134,10 @@ class HomeController extends Controller
         return view('laporan.index');
     }
 
-    public function show(MedicalRecord $medical_record)
+    public function show(History $medical_record)
     {
-        return view('laporan.'.auth()->user()->role, compact('medical_record'));
+        $med_recs = MedicalRecord::where('patient_id', $medical_record->med_rec->patient_id)->get();
+        return view('laporan.'.auth()->user()->role, compact('medical_record','med_recs'));
     }
 
     public function export(Request $request)

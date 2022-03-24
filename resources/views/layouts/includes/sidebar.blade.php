@@ -69,7 +69,7 @@
                 </a>
             </li>
         @endif
-        <li class="menu-item {{ request()->routeIs('med-rec.laporan') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->is('laporan*') ? 'active' : '' }}">
             <a class="menu-link" href="/laporan">
                 <i class="menu-icon fa fa-book"></i>
                 <div>Laporan</div>

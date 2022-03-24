@@ -39,7 +39,30 @@
         </div>
     </div>
     <div class="col-md-7 col-12">
-        <livewire:form-resep-obat :med_rec="$medical_record"/>
+        <div class="card">
+            <div class="card-body table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <th>No</th>
+                        <th>Nama Obat</th>
+                        <th>Harga</th>
+                        <th>Jumlah</th>
+                        <th>Subtotal</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($medical_record->receipts as $obat)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $obat->obat->name }}</td>
+                                <td>Rp. {{ number_format($obat->obat->price, 0, ',', '.') }}</td>
+                                <td>{{ $obat->amount }}</td>
+                                <td>Rp. {{ number_format($obat->subtotal, 0, ',', '.') }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 @else
