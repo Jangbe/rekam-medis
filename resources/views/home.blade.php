@@ -32,7 +32,7 @@
                                 <div class="avatar flex-shrink-0 rounded text-center" style="background: #aaccff91">
                                     <i class="fa-solid fa-user-injured fa-xl pt-2 text-primary"></i>
                                 </div>
-                                <div class="dropdown">
+                                {{-- <div class="dropdown">
                                     <button class="btn p-0" type="button" id="cardOpt3" data-bs-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                         <i class="bx bx-dots-vertical-rounded"></i>
@@ -41,7 +41,7 @@
                                         <a class="dropdown-item" href="javascript:void(0);">View More</a>
                                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <span class="fw-semibold d-block mb-1">Data Pasien</span>
                             <h3 class="card-title mb-2">{{ $patient }}</h3>
@@ -56,7 +56,7 @@
                                 <div class="avatar flex-shrink-0 rounded text-center" style="background: #aaccff91">
                                     <i class="fa fa-hospital-user fa-xl pt-2 text-primary"></i>
                                 </div>
-                                <div class="dropdown">
+                                {{-- <div class="dropdown">
                                     <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                         <i class="bx bx-dots-vertical-rounded"></i>
@@ -65,7 +65,7 @@
                                         <a class="dropdown-item" href="javascript:void(0);">View More</a>
                                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <span>Pendaftaran</span>
                             <h3 class="card-title text-nowrap mb-1">{{ $med_rec_todays }}</h3>
@@ -80,7 +80,7 @@
                                 <div class="avatar flex-shrink-0 rounded text-center" style="background: #aaccff91">
                                     <i class="fa fa-face-smile fa-xl pt-2 text-primary"></i>
                                 </div>
-                                <div class="dropdown">
+                                {{-- <div class="dropdown">
                                     <button class="btn p-0" type="button" id="cardOpt6" data-bs-toggle="dropdown"
                                         aria-haspopup="true" aria-expanded="false">
                                         <i class="bx bx-dots-vertical-rounded"></i>
@@ -89,7 +89,7 @@
                                         <a class="dropdown-item" href="javascript:void(0);">View More</a>
                                         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             <span>Pendaftaran Total</span>
                             <h3 class="card-title text-nowrap mb-1">{{ $med_recs }}</h3>
@@ -106,11 +106,12 @@
                     <div class="avatar flex-shrink-0 rounded text-center" style="background: #aaccff91">
                         <i class="fa fa-hospital-user fa-xl pt-2 text-primary"></i>
                     </div>
-                    <div style="margin-left: 10px">
-                        <small class="text-muted d-block">Grafik Data Pasien</small>
-                        <div class="d-flex align-items-center">
+                    <div style="margin-left: 10px; width: 100%;display: flex;">
+                        <span style="width: 40%;display: block">
+                            <small class="text-muted">Grafik Data Pendaftaran</small>
                             <h6 class="mb-0 me-1">Dalam Satu Minggu</h6>
-                        </div>
+                        </span>
+                        <input type="text" id="filter_pendaftaran" class="form-control mt-1" style="width: 60%">
                     </div>
                 </div>
                 <div id="grafik_pendaftaran" class="px-2"></div>
@@ -124,11 +125,12 @@
                         <div class="avatar flex-shrink-0 rounded text-center" style="background: #aaccff91">
                             <i class="fa fa-user-injured fa-xl pt-2 text-primary"></i>
                         </div>
-                        <div style="margin-left: 10px">
-                            <small class="text-muted d-block">Grafik Data Pasien</small>
-                            <div class="d-flex align-items-center">
-                                <h6 class="mb-0 me-1">Dalam Satu Bulan</h6>
+                        <div style="margin-left: 10px;display: flex; width: 100%">
+                            <div style="width: 60%">
+                                <small class="text-muted d-block">Grafik Data Pasien</small>
+                                <h6 class="mb-0 me-1">Dalam 7 Bulan</h6>
                             </div>
+                            <input type="text" id="datepicker" class="form-control mt-1" placeholder="Dari Bulan" width="40%">
                         </div>
                     </div>
                     <div id="grafik_pasien"></div>
@@ -138,3 +140,64 @@
         <!--/ Grafik Pasien -->
     </div>
 @endsection
+
+@push('js')
+    <script>
+        $('#filter_pendaftaran').daterangepicker({
+            // startDate: start, // after open picker you'll see this dates as picked
+            // endDate: end,
+            placeholder: 'Pilih Filter',
+            locale: {
+                format: 'DD-MM-YYYY',
+                separator: ' / '
+            },
+            maxSpan: {
+                days: 6
+            },
+            ranges: {
+                '1 Minggu Terakhir': [moment().subtract(6, 'days'), moment()],
+                '2 Minggu Terakhir': [moment().subtract(12, 'days'), moment().subtract(6, 'days')],
+                '3 Minggu Terakhir': [moment().subtract(18, 'days'), moment().subtract(12, 'days')],
+                '4 Minggu Terakhir': [moment().subtract(24, 'days'), moment().subtract(18, 'days')],
+            }
+        });
+        $("#datepicker").datepicker( {
+            format: "mm-yyyy",
+            startView: "months", 
+            minViewMode: "months",
+            autoclose: true
+        });
+        $('#filter_pendaftaran').on('change', function(){
+            $.ajax({
+                url: '/data-static-med-rec',
+                data: {dates: $(this).val()},
+                success: function({data,labels}){
+                    grafikPendaftaranChart.updateSeries([{
+                        data
+                    }])
+                    grafikPendaftaranChart.updateOptions({
+                        xaxis: {
+                            categories: labels
+                        }
+                    })
+                }
+            })
+        })
+        $('#datepicker').on('change', function(){
+            $.ajax({
+                url: '/data-static-patient',
+                data: {start: $(this).val()},
+                success: function({data,labels}){
+                    graficPatientChart.updateSeries([{
+                        data
+                    }])
+                    graficPatientChart.updateOptions({
+                        xaxis: {
+                            categories: labels
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+@endpush

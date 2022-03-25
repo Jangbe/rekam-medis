@@ -16,13 +16,11 @@
         <table class="table align-items-center table-striped mb-0" id="table-obat">
           <thead>
             <tr>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama</th>
-              <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Sediaan Obat</th>
-              {{-- <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Type</th>
-              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Satuan</th> --}}
-              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Harga</th>
-              <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Stok</th>
-              <th class="text-secondary opacity-7 text-center">Aksi</th>
+              <th class="bg-primary text-uppercase text-white text-xxs font-weight-bolder opacity-7">Nama</th>
+              <th class="bg-primary text-uppercase text-white text-xxs font-weight-bolder opacity-7 ps-2">Sediaan Obat</th>
+              <th class="bg-primary text-center text-uppercase text-white text-xxs font-weight-bolder opacity-7">Harga</th>
+              <th class="bg-primary text-center text-uppercase text-white text-xxs font-weight-bolder opacity-7">Stok</th>
+              <th class="bg-primary text-white opacity-7 text-center">Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -90,10 +88,11 @@
                 method: 'post',
                 data: $(this).serializeArray(),
                 success: (title) => {
-                    Toast.fire({
-                        icon:'success',
-                        title
-                    })
+                    // Toast.fire({
+                    //     icon:'success',
+                    //     title
+                    // })
+                    showToast(title)
                     table.draw()
                     $('#modal-stock').modal('toggle')
                 }
@@ -109,10 +108,11 @@
                 method: 'post',
                 data,
                 success: (result)=>{
-                    Toast.fire({
-                        icon: 'success',
-                        title: result
-                    })
+                    // Toast.fire({
+                    //     icon: 'success',
+                    //     title: result
+                    // })
+                    showToast(result)
                     table.draw()
                     $('#modal-obat').modal('toggle')
                 },error: ({responseJSON})=>{

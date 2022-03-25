@@ -56,7 +56,7 @@
 <div class="modal fade" id="modal-surat-rujukan" tabindex="-1" aria-labelledby="modal-surat-rujukan-label" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="" method="post">
+            <form action="{{ route('pemeriksaan.receipt', $patient) }}" method="post">
                 @csrf
                 <input type="hidden" name="anamnesa" id="m_anamnesa">
                 <input type="hidden" name="physical_check[tb]" id="m_physical_check_tb">

@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template-free" >
-  <head>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../assets/"
+    data-template="vertical-menu-template-free">
+
+<head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
     <title>Klinik Anak Dr. Marte</title>
 
@@ -13,20 +16,23 @@
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet" />
 
     <!-- Icons. Uncomment required icon fonts -->
     <link rel="stylesheet" href="{{ url('admin') }}/assets/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ url('admin') }}/assets/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="{{ url('admin') }}/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ url('admin') }}/assets/vendor/css/theme-default.css"
+        class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ url('admin') }}/assets/css/demo.css" />
 
     <!-- Vendors CSS -->
@@ -49,43 +55,56 @@
     <script src="{{ url('admin') }}/assets/js/config.js"></script>
     @stack('css')
     @livewireStyles()
-  </head>
+</head>
 
-  <body>
+<body>
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
-      <div class="layout-container">
+        <div class="layout-container">
 
-        <!-- Menu -->
-        @include('layouts.includes.sidebar')
-        <!-- / Menu -->
+            <!-- Menu -->
+            @include('layouts.includes.sidebar')
+            <!-- / Menu -->
 
-        <!-- Layout container -->
-        <div class="layout-page">
-          @include('layouts.includes.navbar')
+            <!-- Layout container -->
+            <div class="layout-page">
+                @include('layouts.includes.navbar')
 
-          <!-- Content wrapper -->
-          <div class="content-wrapper">
-            <!-- Content -->
+                <!-- Content wrapper -->
+                <div class="content-wrapper">
+                    <!-- Content -->
 
-            <div class="container-xxl flex-grow-1 container-p-y">
-              @yield('content')
+                    <div class="container-xxl flex-grow-1 container-p-y">
+                        @yield('content')
+                    </div>
+                    <!-- / Content -->
+
+                    @include('layouts.includes.footer')
+
+                    <div class="content-backdrop fade"></div>
+                </div>
+                <!-- Content wrapper -->
             </div>
-            <!-- / Content -->
-
-            @include('layouts.includes.footer')
-
-            <div class="content-backdrop fade"></div>
-          </div>
-          <!-- Content wrapper -->
+            <!-- / Layout page -->
         </div>
-        <!-- / Layout page -->
-      </div>
 
-      <!-- Overlay -->
-      <div class="layout-overlay layout-menu-toggle"></div>
+        <!-- Overlay -->
+        <div class="layout-overlay layout-menu-toggle"></div>
     </div>
     <!-- / Layout wrapper -->
+
+    <!-- Toast with Placements -->
+    <div id="toast-success" class="bs-toast toast m-2 bg-success position-fixed" role="alert" aria-live="assertive"
+        aria-atomic="true" data-delay="2000" style="top: 2%; right: 2%;">
+        <div class="toast-header">
+            <i class="bx bx-bell me-2"></i>
+            <div class="me-auto fw-semibold">Pesan Success</div>
+            <small>Baru Saja</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">Test</div>
+    </div>
+    <!-- Toast with Placements -->
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -99,8 +118,8 @@
 
     <!-- Font Awesome -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"
-            integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        integrity="sha512-yFjZbTYRCJodnuyGlsKamNE/LlEaEAxSUDe5+u61mV8zzqJVFOH7TnULE2/PP/l5vKWpUNnF4VGVkXh3MjgLsg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- Vendors JS -->
     <script src="{{ url('admin') }}/assets/vendor/libs/apex-charts/apexcharts.js"></script>
@@ -149,7 +168,8 @@
                 '1 Minggu Terakhir': [moment().subtract(6, 'days'), moment()],
                 '30 Hari Terakhir': [moment().subtract(29, 'days'), moment()],
                 'Tahun Ini': [moment(currentYearStart), moment(currentYearEnd)],
-                'Tahun Lalu': [moment(currentYearStart.subtract(1, 'year')), moment(currentYearEnd.subtract(1, 'year'))],
+                'Tahun Lalu': [moment(currentYearStart.subtract(1, 'year')), moment(currentYearEnd.subtract(1,
+                    'year'))],
             }
         });
         $(document).on('click', '.delete-data', function(e) {
@@ -172,10 +192,11 @@
                             method: 'post',
                             data,
                             success: (title) => {
-                                Toast.fire({
-                                    icon: 'success',
-                                    title
-                                })
+                                // Toast.fire({
+                                //     icon: 'success',
+                                //     title
+                                // })
+                                showToast(title)
                                 table.draw()
                             }
                         })
@@ -189,23 +210,26 @@
             width: '100%',
             theme: 'bootstrap'
         })
-        $('input[id=search]').keyup(function(){
-            if(typeof table != 'undefined'){
+        $('input[id=search]').keyup(function() {
+            if (typeof table != 'undefined') {
                 table.search($(this).val()).draw()
             }
         })
     </script>
     @if (session()->has('success'))
         <script>
-            Toast.fire({
-                icon: 'success',
-                title: '{{ session()->get('success') }}'
-            })
+            // Toast.fire({
+            //     icon: 'success',
+            //     title: '{{ session()->get('success') }}'
+            // })
+            showToast('{{ session('success') }}')
+            console.log('{{ session('success') }}');
         </script>
     @endif
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     @livewireScripts
-  </body>
+</body>
+
 </html>

@@ -14,13 +14,13 @@
                 <table class="table align-items-center mb-0" id="table-patient">
                     <thead>
                         <tr>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">NO RM</th>
-                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nama</th>
-                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tgl
+                            <th class="bg-primary text-uppercase text-white text-sm font-weight-bolder opacity-7">NO RM</th>
+                            <th class="bg-primary text-uppercase text-white text-sm font-weight-bolder opacity-7 ps-2">Nama</th>
+                            <th class="bg-primary text-center text-uppercase text-white text-sm font-weight-bolder opacity-7">Tgl
                                 Lahir</th>
-                            <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Ortu
+                            <th class="bg-primary text-center text-uppercase text-white text-sm font-weight-bolder opacity-7">Ortu
                             </th>
-                            <th class="text-secondary opacity-7"></th>
+                            <th class="bg-primary text-white opacity-7"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,6 +57,11 @@
 
 @push('js')
     <script>
-        var table = $('#table-patient').DataTable()
+        var table = $('#table-patient').DataTable({
+            'columnDefs': [{
+                'targets': [4],
+                'orderable' : false
+            }]
+        })
     </script>
 @endpush

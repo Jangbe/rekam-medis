@@ -40,42 +40,55 @@ class HomeController extends Controller
         return view('home', compact('patient', 'med_rec_todays', 'med_recs'));
     }
 
-    public function data_static_med_rec(){
-        $now = new Carbon();
-        $end_week = $now->addDay()->format('Y-m-d');
-        $start_week = $now->subDays(8)->format('Y-m-d');
+    public function data_static_med_rec(Request $request){
+        if($request->has('dates')){
+            $dates = explode(' / ',$request->dates);
+            $start_week = Carbon::make($dates[0])->format('Y-m-d');
+            $end_week = Carbon::make($dates[1])->format('Y-m-d');
+        }else{
+            $now = new Carbon();
+            $end_week = $now->format('Y-m-d');
+            $start_week = $now->subDays(6)->format('Y-m-d');
+        }
 
-        $pendaftaran = MedicalRecord::select(
+        $pendaftaran = History::select(
             DB::raw("(count(*)) as total"),
             DB::raw("(DATE_FORMAT(created_at, '%d-%m-%Y')) as my_date"),
-        )->whereBetween('created_at', [$start_week, $end_week])->groupBy(DB::raw("DATE_FORMAT(created_at, '%d-%m-%Y')"))->get();
-
-        $data['data'] = [0,0,0,0,0,0,0];
-        $periods = CarbonPeriod::create(Carbon::now()->subDays(6), Carbon::now());
-        foreach ($periods as  $p) {
+        )->whereBetween('created_at', [$start_week, $end_week.' 23:59:59'])->groupBy(DB::raw("DATE_FORMAT(created_at, '%d-%m-%Y')"))->get();
+        $periods = CarbonPeriod::create($start_week, $end_week);
+        foreach ($periods as $i => $p) {
             $data['labels'][] = $p->isoFormat('ddd');
-            $data['data'][$p->format('w')] = $pendaftaran->where('my_date', $p->format('d-m-Y'))->first()->total??0;
+            $data['data'][$i] = $pendaftaran->where('my_date', $p->format('d-m-Y'))->first()->total??0;
         }
         return response()->json($data);
     }
 
-    public function data_static_patient(){
+    public function data_static_patient(Request $request){
+        if($request->has('start')){
+            $start = explode('-',$request->start);
+            $carbon = Carbon::create($start[1], $start[0])->subMonth();
+        }else{
+            $carbon = Carbon::make('first day of this month')->subMonth();
+        }
+        $start_month = $carbon->format('Y-m-d');
+        $end_month = $carbon->addMonths(7)->format('Y-m-d');
 
-        $start_month = new Carbon('first day of this month');
-        $start_month = $start_month->format('Y-m-d');
-        $end_month = date('Y-m-d');
-
-        $pendaftaran = MedicalRecord::select(
+        $pendaftaran = History::select(
             DB::raw("(count(*)) as total"),
-            DB::raw("(DATE_FORMAT(created_at, '%d')) as date")
-        )->whereBetween('created_at', [$start_month, $end_month])->groupBy(
-            DB::raw("DATE_FORMAT(created_at, '%d')"))->get();
+            DB::raw("(DATE_FORMAT(created_at, '%m')) as month")
+        )->whereBetween('created_at', [$start_month, $end_month.' 23:59:59'])->groupBy(
+            DB::raw("DATE_FORMAT(created_at, '%m')"))->get();
 
-        $periods = CarbonPeriod::create($start_month, Carbon::now());
-        foreach ($periods as $i =>  $p) {
-            $d = $p->format('d');
-            $data['labels'][] = $d;
-            $data['data'][] = $pendaftaran->where('date', $d)->first()->total??0;
+        $periods = collect(CarbonPeriod::create($start_month, $end_month)->toArray())->groupBy(function($period){
+            return $period->format('Y-m');
+        })->toArray();
+        $a = 0;
+        $data = ['label'=>[],'data'=>[]];
+        foreach ($periods as $i => $p) {
+            $date = explode('-', str($i));
+            $date = Carbon::create($date[0],$date[1]);
+            $data['labels'][] = $a==0?'':$date->isoFormat('MMM');
+            $data['data'][$a++] = $pendaftaran->where('month', $date->format('m'))->first()->total??0;
         }
         return response()->json($data);
     }

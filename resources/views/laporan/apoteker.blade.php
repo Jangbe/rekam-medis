@@ -22,17 +22,17 @@
                     <tr>
                         <td style="width: 80px">Pro.</td>
                         <td style="width: 1px">:</td>
-                        <td class="dotted">{{ $medical_record->patient->name }}</td>
+                        <td class="dotted">{{ $medical_record->name }}</td>
                     </tr>
                     <tr>
                         <td>Umur</td>
                         <td>:</td>
-                        <td class="dotted">{{ $medical_record->patient->age }}</td>
+                        <td class="dotted">{{ $medical_record->med_rec->patient->age??'' }}</td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top">Alamat</td>
                         <td style="vertical-align: top">:</td>
-                        <td class="dotted">{{ $medical_record->patient->address }}</td>
+                        <td class="dotted">{{ $medical_record->med_rec->patient->address??'' }}</td>
                     </tr>
                 </table>
             </div>

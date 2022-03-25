@@ -17,7 +17,6 @@ class PemeriksaanController extends Controller
     public function index()
     {
         $med_recs = MedicalRecord::whereDate('created_at', date('Y-m-d'))->where('diagnose', null)->get();
-        // dd($med_recs);
         return view('dokter.pemeriksaan.index', compact('med_recs'));
     }
 
@@ -45,7 +44,7 @@ class PemeriksaanController extends Controller
         ]);
         if($request->has('rujukan')){
             $pemeriksaan->update($validate);
-            return redirect('dokter/pemeriksaan');
+            return redirect('dokter/pemeriksaan')->with('Surat Rujukan Berhasil dibuat');
         }else{
             $request->session()->put(['med_rec'=>$validate]);
             return redirect()->route('pemeriksaan.receipt', $pemeriksaan);
