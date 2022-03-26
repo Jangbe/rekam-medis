@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="card my-4">
+<div class="card">
     <div class="card-header d-flex justify-content-between">
         <h6 class="card-title my-auto" style="padding-right: 20px">
             Data Obat

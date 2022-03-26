@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card my-4">
+    <div class="card">
         <div class="card-header d-flex justify-content-between">
             <h3 class="card-title my-auto"> Data Pasien </h3>
             @if (auth()->user()->role == 'pegawai')

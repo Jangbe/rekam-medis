@@ -11,7 +11,7 @@
             @if ($errors->any())
             <div class="alert alert-warning mb-5">Ada field yang belum diisi</div>
             @endif
-            <div class="card my-4">
+            <div class="card">
                 <div class="card-header">
                     <form action="{{ route('med-rec.export') }}" method="post" id="form" target="_blank" class="d-flex justify-content-between">
                         @csrf
