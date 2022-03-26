@@ -284,7 +284,7 @@ $.ajax({
                     }
                 ],
                 chart: {
-                    height: 215,
+                    height: 300,
                     parentHeightOffset: 0,
                     parentWidthOffset: 0,
                     toolbar: {

@@ -43,11 +43,11 @@ class PemeriksaanController extends Controller
             'diagnose' => 'required',
             'theraphy' => 'nullable',
             'rujukan' => 'nullable|array',
-            'type' => 'required'
+            'type' => 'nullable'
         ]);
         if($request->has('rujukan')){
             $pemeriksaan->update($validate);
-            return redirect('dokter/pemeriksaan')->with('Surat Rujukan Berhasil dibuat');
+            return redirect('dokter/pemeriksaan')->with('success','Surat Rujukan Berhasil dibuat');
         }else{
             $request->session()->put(['med_rec'=>$validate]);
             return redirect()->route('pemeriksaan.receipt', $pemeriksaan);

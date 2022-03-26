@@ -45,10 +45,27 @@
                     </div>
                 </div>
             </div>
+            <div class="form-check my-2">
+                <input class="form-check-input" type="checkbox" name="is_rujukan" id="is_rujukan">
+                <label class="form-check-label mb-0 ms-2" for="is_rujukan">Buat Surat Rujukan</label>
+            </div>
+            <div class="tab" style="display: none" id="surat-rujukan">
+                <div class="form-group">
+                    <label for="rujukan">Rujukan Kepada</label>
+                    <div class="input-group input-group-outline">
+                        <textarea disabled name="rujukan[kepada]" id="rujukan" cols="30" rows="3" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="keterangan">Keterangan</label>
+                    <div class="input-group input-group-outline">
+                        <textarea disabled name="rujukan[keterangan]" id="keterangan" cols="30" rows="3" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
             <div class="d-flex justify-content-end" id="nextprevious">
                 <div class="mt-3">
-                    <button class="btn btn-warning" type="button" id="surat-rujukan">Surat Rujukan</button>
-                    <button class="btn btn-success" id="nextBtn">Resep Obat</button>
+                    <button class="btn btn-success" id="nextBtn">Simpan Data</button>
                 </div>
             </div>
         </div>
@@ -56,8 +73,6 @@
 </div>
 <div class="modal fade" id="pilih-resep" tabindex="-1" aria-labelledby="pilih-resep-label" aria-hidden="true">
     <div class="modal-dialog">
-        {{-- <div class="modal-header">
-        </div> --}}
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal-surat-rujukan-label">Pilih Tipe Pemeriksaan</h5>
@@ -70,85 +85,28 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modal-surat-rujukan" tabindex="-1" aria-labelledby="modal-surat-rujukan-label" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form action="{{ route('pemeriksaan.receipt', $patient) }}" method="post">
-                @csrf
-                <input type="hidden" name="anamnesa" id="m_anamnesa">
-                <input type="hidden" name="physical_check[tb]" id="m_physical_check_tb">
-                <input type="hidden" name="physical_check[bb]" id="m_physical_check_bb">
-                <input type="hidden" name="physical_check[suhu]" id="m_physical_check_suhu">
-                <input type="hidden" name="diagnose" id="m_diagnose">
-                <input type="hidden" name="theraphy" id="m_theraphy">
-                <input type="hidden" name="is_rujukan" value="1">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-surat-rujukan-label">Buat Surat Rujukan Untuk {{ $patient->patient->name }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="rujukan">Rujukan Kepada</label>
-                        <div class="input-group input-group-outline">
-                            <textarea name="rujukan[kepada]" id="rujukan" cols="30" rows="3" class="form-control"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="keterangan">Keterangan</label>
-                        <div class="input-group input-group-outline">
-                            <textarea name="rujukan[keterangan]" id="keterangan" cols="30" rows="3" class="form-control"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button id="btn-surat-rujukan" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 @push('js')
     <script>
-        $('#surat-rujukan').on('click', function(){
-            let data = $('#form-pemeriksaan').serializeArray()
-            data.forEach(v => {
-                let idx = v.name.replace('[', '_').replace(']', '');
-                $('#modal-surat-rujukan').find(`#m_${idx}`).val(v.value)
-            })
-            // console.log(data);
-            $('#modal-surat-rujukan').modal('toggle')
-        })
-        $('#btn-surat-rujukan').on('click', function(){
-            let data = $('#form-pemeriksaan').serializeArray()
-            data.push({
-                name: 'rujukan',
-                value: $('#rujukan').val()
-            })
-            data.push({
-                name: 'keterangan',
-                value: $('#keterangan').val()
-            })
-            data.push({
-                name: 'is_rujukan',
-                value: true
-            })
-            $.ajax({
-                url: '/dokter/pemeriksaan',
-                method: 'post',
-                data,
-                success: (result)=>{
-                    console.log(e);
-                },
-                error: (e)=>{
-                    console.log(e);
-                }
-            })
+        function setRujukan(is_checked){
+            $('#rujukan').attr('disabled', !is_checked)
+            $('#keterangan').attr('disabled', !is_checked)
+            if(is_checked){
+                $('#surat-rujukan').fadeIn()
+            }else{
+                $('#surat-rujukan').fadeOut()
+            }
+        }
+        setRujukan($('#is_rujukan').prop('checked'))
+        $('#is_rujukan').on('click', function(){
+            let checked = $(this).prop('checked')
+            setRujukan(checked)
         })
         $('#nextBtn').on('click', function(e){
-            e.preventDefault()
-            $('#pilih-resep').modal('show')
+            if(!$('#is_rujukan').prop('checked')){
+                e.preventDefault()
+                $('#pilih-resep').modal('show')
+            }
         })
         $('#biasa').on('click', function(){
             $('input[name=type]').val('biasa')

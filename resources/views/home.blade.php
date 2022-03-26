@@ -121,7 +121,7 @@
         <div class="col-md-6 mb-4">
             <div class="card h-100">
                 <div class="card-body px-0">
-                    <div class="d-flex p-4 pt-0">
+                    <div class="d-flex p-4 pt-0 pb-2">
                         <div class="avatar flex-shrink-0 rounded text-center" style="background: #aaccff91">
                             <i class="fa fa-user-injured fa-xl pt-2 text-primary"></i>
                         </div>
