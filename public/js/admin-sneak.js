@@ -393,6 +393,5 @@ function showToast(message){
     let toastSuccess = $('#toast-success');
     toastSuccess.find('.toast-body').text(message)
     let toastPlacement = bootstrap.Toast.getOrCreateInstance(toastSuccess);
-    console.log(toastPlacement);
     toastPlacement.show();
 }

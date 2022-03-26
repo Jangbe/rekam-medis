@@ -59,7 +59,7 @@
             <li class="menu-item {{ request()->is('dokter/medical-records*') ? 'active' : '' }}">
                 <a class="menu-link" href="/dokter/medical-records">
                     <i class="menu-icon fa fa-hospital-user"></i>
-                    <div>Rekam Medis</div>
+                    <div>Data Pendaftaran</div>
                 </a>
             </li>
             <li class="menu-item {{ request()->is('dokter/pemeriksaan*') ? 'active' : '' }}">
@@ -72,7 +72,7 @@
         <li class="menu-item {{ request()->is('laporan*') ? 'active' : '' }}">
             <a class="menu-link" href="/laporan">
                 <i class="menu-icon fa fa-book"></i>
-                <div>Laporan</div>
+                <div>Laporan Rekam Medis</div>
             </a>
         </li>
         <!-- Misc -->

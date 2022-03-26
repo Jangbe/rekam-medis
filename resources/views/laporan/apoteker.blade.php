@@ -17,7 +17,11 @@
                 <p style="font-size: 13px" class="text-center">TELP. 0851 0009 9370 HP. 0815 6022 530 - 0821 2972 7253</p>
                 <hr style="border-width: 2px; margin-top: 10px; margin-bottom: 3px">
                 <hr style="border-width: 1px; margin-top: 3px">
-                <img src="{{ asset('storage/'.$medical_record->receipt) }}" style="width: 100%" alt="Belum Ada Resep Obat" class="pb-4" srcset="">
+                @if (file_exists(public_path('storage/'.$medical_record->med_rec->receipt)))
+                    <img src="{{ asset('storage/'.$medical_record->med_rec->receipt) }}" style="width: 100%" alt="Belum Ada Resep Obat" class="pb-4" srcset="">
+                @else
+                    <p>{{ $medical_record->med_rec->receipt }}</p>                
+                @endif
                 <table style="width: 90%">
                     <tr>
                         <td style="width: 80px">Pro.</td>

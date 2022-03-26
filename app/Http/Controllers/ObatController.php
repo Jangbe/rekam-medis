@@ -22,7 +22,7 @@ class ObatController extends Controller
 
     public function ajax(Request $request)
     {
-        $model = Obat::query();
+        $model = Obat::orderBy('created_at', 'desc')->get();
 
         return DataTables::of($model)
             ->editColumn('name', function($o){

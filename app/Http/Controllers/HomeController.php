@@ -149,7 +149,8 @@ class HomeController extends Controller
 
     public function show(History $medical_record)
     {
-        $med_recs = MedicalRecord::where('patient_id', $medical_record->med_rec->patient_id??'')->get();
+        $med_recs = MedicalRecord::where('patient_id', $medical_record->med_rec->patient_id??'')->simplePaginate(5);
+        // $med_recs = MedicalRecord::where('patient_id', $medical_record->med_rec->patient_id??'')->get();
         return view('laporan.'.auth()->user()->role, compact('medical_record','med_recs'));
     }
 

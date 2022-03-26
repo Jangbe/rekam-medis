@@ -8,10 +8,12 @@
         window.addEventListener('load', function() {
             // get the canvas element and its context
             var canvas = document.getElementById('sketchpad');
-            canvas.width = $('.container').width()
-            canvas.height = $('.container').height() - 200;
-            var context = canvas.getContext('2d');
-            var isIdle = true;
+            if(canvas){
+                canvas.width = $('.container').width()
+                canvas.height = $('.container').height() - 200;
+                var context = canvas.getContext('2d');
+                var isIdle = true;
+            }
 
             function drawstart(event) {
                 context.beginPath();
@@ -44,17 +46,23 @@
                 drawend(event.changedTouches[0])
             }
 
-            canvas.addEventListener('touchstart', touchstart, false);
-            canvas.addEventListener('touchmove', touchmove, false);
-            canvas.addEventListener('touchend', touchend, false);
-
-            canvas.addEventListener('mousedown', drawstart, false);
-            canvas.addEventListener('mousemove', drawmove, false);
-            canvas.addEventListener('mouseup', drawend, false);
+            if(canvas){
+                canvas.addEventListener('touchstart', touchstart, false);
+                canvas.addEventListener('touchmove', touchmove, false);
+                canvas.addEventListener('touchend', touchend, false);
+    
+                canvas.addEventListener('mousedown', drawstart, false);
+                canvas.addEventListener('mousemove', drawmove, false);
+                canvas.addEventListener('mouseup', drawend, false);
+            }
 
             $('#simpan').on('click', function() {
-                let data = canvas.toDataURL()
-                $('#receipt').val(data)
+                if(canvas){
+                    let data = canvas.toDataURL()
+                    $('#receipt').val(data)
+                }else{
+                    $('#receipt').val($('textarea[name=receipt]').val())
+                }
                 $('form').submit();
             })
         }, false); // end window.onLoad
@@ -156,7 +164,11 @@
             <p class="text-center">TELP. 0851 0009 9370 HP. 0815 6022 530 - 0821 2972 7253</p>
             <hr style="border-width: 2px; margin-bottom: 2px; margin-top: 10px">
             <hr style="border-width: 1px; margin-bottom: 2px">
-            <canvas id='sketchpad' width='500' height='500'></canvas>
+            @if ($type=='canvas')
+                <canvas id='sketchpad' width='500' height='500'></canvas>
+            @else
+                <textarea name="receipt" id="" style="width: 90% !important" rows="10"></textarea>            
+            @endif
             <table style="width: 90%">
                 <tr>
                     <td style="width: 80px">Pro.</td>

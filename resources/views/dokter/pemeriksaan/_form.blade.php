@@ -2,6 +2,7 @@
     <div class="alert alert-primary">Pemeriksaan {{ $patient->patient->name }} ({{ $patient->patient->age }})</div>
     <form class="card" action="{{ route('pemeriksaan.receipt', $patient) }}" method="POST" id="form-pemeriksaan">
         @csrf
+        <input type="hidden" name="type">
         <div class="card-body">
             <h3 id="register" class="text-center">Pemeriksaan</h3>
             <div class="tab" id="outer">
@@ -52,6 +53,22 @@
             </div>
         </div>
     </form>
+</div>
+<div class="modal fade" id="pilih-resep" tabindex="-1" aria-labelledby="pilih-resep-label" aria-hidden="true">
+    <div class="modal-dialog">
+        {{-- <div class="modal-header">
+        </div> --}}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-surat-rujukan-label">Pilih Tipe Pemeriksaan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex justify-content-between">
+                <button class="btn btn-primary" style="width: 48%" id="biasa">Biasa</button>
+                <button class="btn btn-info" style="width: 48%" id="canvas">Canvas</button>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="modal fade" id="modal-surat-rujukan" tabindex="-1" aria-labelledby="modal-surat-rujukan-label" aria-hidden="true">
     <div class="modal-dialog">
@@ -128,6 +145,18 @@
                     console.log(e);
                 }
             })
+        })
+        $('#nextBtn').on('click', function(e){
+            e.preventDefault()
+            $('#pilih-resep').modal('show')
+        })
+        $('#biasa').on('click', function(){
+            $('input[name=type]').val('biasa')
+            $('#form-pemeriksaan').submit()
+        })
+        $('#canvas').on('click', function(){
+            $('input[name=type]').val('canvas')
+            $('#form-pemeriksaan').submit()
         })
     </script>
 @endpush

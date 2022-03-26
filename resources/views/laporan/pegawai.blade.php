@@ -74,12 +74,13 @@
                 </div>
             </div>
             <div class="col-md-4 col-12">
-                <div class="list-group mt-1">
+                <div class="list-group mt-1 mb-3">
                     <span href="" class="list-group-item active text-center">Histori Rekam Medis</span>
                     @foreach ($med_recs->sortByDesc('created_at') as $med_rec)
                         <a href="/laporan/{{ $med_rec->id }}" class="list-group-item list-group-item-action">{{ $med_rec->created_at }} ( {{ $med_rec->created_at->isoFormat('dddd') }} )</a>
                     @endforeach
                 </div>
+                {!! $med_recs->links() !!}
             </div>
         </div>
     @else

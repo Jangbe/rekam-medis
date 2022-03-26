@@ -144,8 +144,6 @@
 @push('js')
     <script>
         $('#filter_pendaftaran').daterangepicker({
-            // startDate: start, // after open picker you'll see this dates as picked
-            // endDate: end,
             placeholder: 'Pilih Filter',
             locale: {
                 format: 'DD-MM-YYYY',

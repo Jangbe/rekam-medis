@@ -11,8 +11,14 @@
         <div class="row">
             <div class="col-md-5 col-12">
                 <div class="card mb-3">
-                    <img class="card-img-top" src="{{ asset('storage/' . $medical_record->med_rec->receipt) }}"
-                        alt="Belum Ada Resep Obat" />
+                    <div class="p-4">
+                        @if (file_exists(public_path('storage/' . $medical_record->med_rec->receipt)))
+                        <img class="card-img-top" src="{{ asset('storage/' . $medical_record->med_rec->receipt) }}"
+                            alt="Belum Ada Resep Obat" />
+                        @else
+                            {{ $medical_record->med_rec->receipt }}
+                        @endif
+                    </div>
                     <hr class="my-0 py-0">
                     <div class="card-body">
                         <h5 class="card-title">{{ $medical_record->name }}</h5>
@@ -29,7 +35,7 @@
             </div>
             <div class="col-md-7 col-12">
                 <small class="text-light fw-semibold">Histori Rekam Medis</small>
-                <div class="accordion mt-3" id="accordionExample">
+                <div class="accordion my-3" id="accordionExample">
                     @foreach ($med_recs->sortByDesc('created_at') as $med_rec)
                         <div class="card accordion-item">
                             <h2 class="accordion-header" id="heading{{ $med_rec->id }}">
@@ -50,6 +56,7 @@
                         </div>
                     @endforeach
                 </div>
+                {!! $med_recs->links() !!}
             </div>
         </div>
     @else
