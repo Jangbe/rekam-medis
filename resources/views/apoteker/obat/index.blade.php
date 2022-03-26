@@ -119,7 +119,7 @@
                     $('.is-invalid').removeClass('is-invalid');
                     let errors = responseJSON.errors
                     for(let i in errors){
-                        $(`input[name=${i}]`).addClass('is-invalid').parent().append(
+                        $(`select[name=${i}],input[name=${i}]`).addClass('is-invalid').parent().append(
                             `<div class="invalid-feedback">${errors[i][0]}</div>`
                         )
                         console.log(errors[i]);
